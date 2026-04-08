@@ -1,0 +1,179 @@
+/* Layout */
+.layout {
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+  font-family: 'Inter', sans-serif;
+}
+
+/* Sidebar */
+.sidebar {
+  width: 220px;
+  background: linear-gradient(180deg, #0f172a, #020617);
+  color: white;
+  padding: 15px 10px;
+  transition: 0.3s;
+}
+
+.sidebar.collapsed {
+  width: 70px;
+}
+
+/* Logo */
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 25px;
+  padding-left: 5px;
+}
+
+/* HB Box */
+.logo-box {
+  background: linear-gradient(135deg, #7c3aed, #2563eb);
+  padding: 6px 10px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+/* HireBridge Text */
+.logo-text {
+  background: linear-gradient(90deg, #7c3aed, #2563eb);
+
+  background-clip: text;           /* Standard */
+  -webkit-background-clip: text;   /* Chrome */
+
+  color: transparent;              /* Standard */
+  -webkit-text-fill-color: transparent;
+
+  font-weight: 600;
+  font-size: 15px;
+}
+
+/* Menu */
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+}
+
+.sidebar li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+  border-radius: 10px;
+  cursor: pointer;
+  margin-bottom: 8px;
+  transition: 0.3s;
+  font-size: 14px;
+}
+
+.sidebar li:hover {
+  background: rgba(255,255,255,0.05);
+}
+
+.sidebar li.active {
+  background: linear-gradient(90deg, #7c3aed, #2563eb);
+}
+
+/* Icons */
+.sidebar li i {
+  font-size: 14px;
+}
+
+/* Hide text collapsed */
+.sidebar.collapsed span {
+  display: none;
+}
+
+/* Main */
+.main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background: #f8fafc;
+}
+
+/* Topbar */
+.topbar {
+  height: 55px;
+  background: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+/* Left */
+.left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.menu-btn {
+  background: none;
+  border: none;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.page-title {
+  font-size: 15px;
+  font-weight: 600;
+}
+
+/* User */
+.user-menu {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  position: relative;
+}
+
+.avatar {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+}
+
+.username {
+  font-size: 13px;
+}
+
+/* Dropdown */
+.dropdown {
+  position: absolute;
+  top: 45px;
+  right: 0;
+  background: white;
+  border-radius: 10px;
+  width: 140px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+  overflow: hidden;
+  animation: fadeIn 0.2s ease;
+}
+
+.dropdown p {
+  padding: 10px;
+  font-size: 13px;
+}
+
+.dropdown p:hover {
+  background: #f1f5f9;
+}
+
+/* Content */
+.content {
+  padding: 20px;
+  overflow-y: auto;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}

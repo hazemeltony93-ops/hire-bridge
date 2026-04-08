@@ -1,0 +1,43 @@
+<div class="container">
+  <div class="card role-card">
+
+    <h1>Choose Your Role</h1>
+    <p>Select how you want to use the platform</p>
+
+    <div class="roles">
+
+      <!-- CANDIDATE -->
+      <div
+        class="role-box"
+        [class.active]="selectedRole === 'candidate'"
+        (click)="selectRole('candidate')"
+      >
+        <h3>👨‍💻 Candidate</h3>
+        <p>Find jobs and apply easily</p>
+      </div>
+
+      <!-- EMPLOYER -->
+      <div
+        class="role-box"
+        [class.active]="selectedRole === 'employer'"
+        (click)="selectRole('employer')"
+      >
+        <h3>🏢 Employer</h3>
+        <p>Post jobs and hire talents</p>
+      </div>
+
+    </div>
+
+    <!-- ERROR -->
+    <div class="error shake" *ngIf="error">
+      Please select a role ❌
+    </div>
+
+    <!-- BUTTON -->
+    <button (click)="continue()" [disabled]="loading">
+      <span *ngIf="!loading">Continue</span>
+      <span *ngIf="loading" class="loader"></span>
+    </button>
+
+  </div>
+</div>

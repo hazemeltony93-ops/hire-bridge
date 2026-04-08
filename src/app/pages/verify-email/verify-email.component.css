@@ -1,0 +1,149 @@
+/* ===== BASE ===== */
+* {
+  box-sizing: border-box;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.container {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #f5f7fb;
+}
+
+.card {
+  width: 900px;
+  display: flex;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+  background: white;
+}
+
+/* LEFT */
+.left {
+  flex: 1;
+  background: linear-gradient(135deg, #4c00ff, #9d4edd);
+  color: white;
+  padding: 60px 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* RIGHT */
+.right {
+  flex: 1;
+  padding: 50px 40px;
+}
+
+.right h1 {
+  margin-bottom: 20px;
+}
+
+/* ===== FLOATING INPUT ===== */
+.floating-group {
+  position: relative;
+  margin-bottom: 25px;
+}
+
+.floating-group input {
+  width: 100%;
+  padding: 16px;
+  border-radius: 12px;
+  border: none;
+  background: #f3f5f9;
+  outline: none;
+}
+
+.floating-group label {
+  position: absolute;
+  left: 14px;
+  top: 16px;
+  color: #777;
+  transition: 0.2s;
+  font-size: 14px;
+}
+
+/* FIX مهم */
+.floating-group input:focus + label,
+.floating-group input:not(:placeholder-shown) + label {
+  top: -8px;
+  left: 10px;
+  font-size: 11px;
+  background: white;
+  padding: 0 5px;
+  color: #6c63ff;
+}
+
+/* ===== OTP ===== */
+.otp-container {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.otp-container input {
+  width: 60px;
+  height: 65px;
+  text-align: center;
+  font-size: 20px;
+  border-radius: 12px;
+  border: none;
+  background: #f3f5f9;
+  transition: 0.2s;
+}
+
+.otp-container input:focus {
+  background: white;
+  box-shadow: 0 0 0 2px rgba(108, 99, 255, 0.2);
+}
+
+/* ===== BUTTON ===== */
+button {
+  width: 100%;
+  padding: 14px;
+  border-radius: 12px;
+  border: none;
+  background: linear-gradient(135deg, #6c63ff, #4c00ff);
+  color: white;
+  cursor: pointer;
+}
+
+/* ===== SUCCESS ===== */
+.success-box {
+  background: #e6fff2;
+  color: #00a86b;
+  padding: 12px;
+  border-radius: 10px;
+  margin-bottom: 15px;
+  animation: pop 0.4s ease;
+}
+
+/* ===== ERROR ===== */
+.error-box {
+  background: #ffe6e6;
+  color: #d00000;
+  padding: 12px;
+  border-radius: 10px;
+  margin-bottom: 15px;
+}
+
+/* ===== ANIMATION ===== */
+@keyframes pop {
+  0% {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.timer {
+  margin-top: 15px;
+  font-size: 13px;
+  color: #666;
+}

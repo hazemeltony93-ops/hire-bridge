@@ -1,0 +1,119 @@
+<div class="container">
+  <div class="card">
+
+    <!-- LEFT -->
+    <div class="left">
+      <h2>Join Us 🚀</h2>
+      <p>Create your account and start your journey</p>
+    </div>
+
+    <!-- RIGHT -->
+    <div class="right">
+      <h1>Sign Up</h1>
+
+      <form (ngSubmit)="submit()" class="form">
+
+        <!-- NAME -->
+        <div class="field">
+          <input
+            placeholder=" "
+            [(ngModel)]="name"
+            name="name"
+            (blur)="onBlur('name')"
+          />
+          <label>Full Name</label>
+
+          <div class="error" *ngIf="touched.name && isEmpty(name)">
+            Full name is required
+          </div>
+        </div>
+
+        <!-- EMAIL -->
+        <div class="field">
+          <input
+            type="email"
+            placeholder=" "
+            [(ngModel)]="email"
+            name="email"
+            (blur)="onBlur('email')"
+          />
+          <label>Email</label>
+
+          <div class="error" *ngIf="touched.email && isEmpty(email)">
+            Email is required
+          </div>
+        </div>
+
+        <!-- PHONE -->
+        <div class="field">
+          <input
+            placeholder=" "
+            [(ngModel)]="phone"
+            name="phone"
+            (blur)="onBlur('phone')"
+          />
+          <label>Phone Number</label>
+
+          <div class="error" *ngIf="touched.phone && isEmpty(phone)">
+            Phone is required
+          </div>
+        </div>
+
+        <!-- PASSWORD -->
+        <div class="field">
+          <input
+            type="password"
+            placeholder=" "
+            [(ngModel)]="password"
+            name="password"
+            (blur)="onBlur('password')"
+          />
+          <label>Password</label>
+
+          <div class="error" *ngIf="touched.password && isEmpty(password)">
+            Password is required
+          </div>
+        </div>
+
+        <!-- CONFIRM -->
+        <div class="field">
+          <input
+            type="password"
+            placeholder=" "
+            [(ngModel)]="confirmPassword"
+            name="confirmPassword"
+            (blur)="onBlur('confirmPassword')"
+          />
+          <label>Confirm Password</label>
+
+          <div class="error" *ngIf="touched.confirmPassword && isEmpty(confirmPassword)">
+            Confirm your password
+          </div>
+        </div>
+
+        <!-- MATCH -->
+        <div class="error shake" *ngIf="touched.confirmPassword && password !== confirmPassword">
+          Passwords do not match ❌
+        </div>
+
+        <!-- BACKEND -->
+        <div class="error shake" *ngIf="errorMsg">
+          {{ errorMsg }}
+        </div>
+
+        <!-- BUTTON -->
+        <button type="submit" [disabled]="loading">
+          <span *ngIf="!loading">Create Account</span>
+          <span *ngIf="loading" class="loader"></span>
+        </button>
+
+      </form>
+
+      <div class="links">
+        <a routerLink="/login">Already have an account?</a>
+      </div>
+
+    </div>
+
+  </div>
+</div>

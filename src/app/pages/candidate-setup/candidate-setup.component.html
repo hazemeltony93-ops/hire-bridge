@@ -1,0 +1,106 @@
+<div class="container">
+  <div class="card">
+
+    <!-- LEFT -->
+    <div class="left">
+      <h2 *ngIf="!success">Complete Your Profile 🚀</h2>
+      <h2 *ngIf="success">🎉 Done!</h2>
+      <p *ngIf="!success">Fill all fields to continue</p>
+    </div>
+
+    <!-- RIGHT -->
+    <div class="right">
+
+      <!-- SUCCESS -->
+      <div *ngIf="success" class="success-box">
+        <h1>Profile Completed 🎉</h1>
+        <p>You are ready to start applying</p>
+      </div>
+
+      <!-- FORM -->
+      <form *ngIf="!success" (ngSubmit)="submit()" class="form">
+
+        <h1>Candidate Profile</h1>
+
+        <!-- SPECIALIZATION -->
+        <div class="field">
+          <input placeholder=" " [(ngModel)]="candidate.specialization" name="specialization">
+          <label>Specialization</label>
+          <div class="error" *ngIf="submitted && isEmpty(candidate.specialization)">Required</div>
+        </div>
+
+        <!-- EXPERIENCE -->
+        <div class="field">
+          <input placeholder=" " [(ngModel)]="candidate.experienceLevel" name="experienceLevel">
+          <label>Experience Level</label>
+          <div class="error" *ngIf="submitted && isEmpty(candidate.experienceLevel)">Required</div>
+        </div>
+
+        <!-- SALARY -->
+        <div class="field">
+          <input type="number" placeholder=" " [(ngModel)]="candidate.expectedSalary" name="salary">
+          <label>Expected Salary</label>
+          <div class="error" *ngIf="submitted && isEmpty(candidate.expectedSalary)">Required</div>
+        </div>
+
+        <!-- WORK TYPE -->
+        <div class="field">
+          <input placeholder=" " [(ngModel)]="candidate.workType" name="workType">
+          <label>Work Type</label>
+          <div class="error" *ngIf="submitted && isEmpty(candidate.workType)">Required</div>
+        </div>
+
+        <!-- STATUS -->
+        <div class="field">
+          <input placeholder=" " [(ngModel)]="candidate.status" name="status">
+          <label>Status</label>
+          <div class="error" *ngIf="submitted && isEmpty(candidate.status)">Required</div>
+        </div>
+
+        <!-- CV -->
+        <div class="field">
+          <input placeholder=" " [(ngModel)]="candidate.cvUrl" name="cv">
+          <label>CV URL</label>
+          <div class="error" *ngIf="submitted && isEmpty(candidate.cvUrl)">Required</div>
+        </div>
+
+        <!-- 🔥 SKILLS TAGS -->
+        <div class="skills-box">
+
+          <input
+            placeholder="Add skill and press Enter"
+            [(ngModel)]="skillInput"
+            name="skillInput"
+            (keydown.enter)="addSkill($event)"
+          />
+
+          <!-- TAGS -->
+          <div class="tags">
+            <span *ngFor="let skill of skills; let i = index">
+              {{ skill }}
+              <button type="button" (click)="removeSkill(i)">×</button>
+            </span>
+          </div>
+
+          <div class="error" *ngIf="submitted && skills.length === 0">
+            Add at least one skill
+          </div>
+
+        </div>
+
+        <!-- ERROR -->
+        <div class="error shake" *ngIf="errorMessage">
+          {{ errorMessage }}
+        </div>
+
+        <!-- BUTTON -->
+        <button type="submit" [disabled]="loading">
+          <span *ngIf="!loading">Save Profile</span>
+          <span *ngIf="loading" class="loader"></span>
+        </button>
+
+      </form>
+
+    </div>
+  </div>
+</div>

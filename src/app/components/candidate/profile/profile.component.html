@@ -1,0 +1,46 @@
+<div class="profile-page">
+
+  <div class="profile-card">
+
+    <!-- Left -->
+    <div class="left">
+
+      <div class="avatar">
+        <img src="https://i.pravatar.cc/100">
+      </div>
+
+      <h2>{{ profileForm.value.name || 'Your Name' }}</h2>
+      <p>{{ profileForm.value.email || 'email@example.com' }}</p>
+
+    </div>
+
+    <!-- Right -->
+    <div class="right">
+
+      <h2>Edit Profile</h2>
+
+      <form [formGroup]="profileForm" (ngSubmit)="submit()">
+
+        <input type="text" formControlName="name" placeholder="Name">
+
+        <input type="email" formControlName="email" placeholder="Email">
+
+        <input type="number" formControlName="experience" placeholder="Experience">
+
+        <input type="number" formControlName="salary" placeholder="Salary">
+
+        <select formControlName="workType">
+          <option>Full Time</option>
+          <option>Part Time</option>
+          <option>Remote</option>
+        </select>
+
+        <button type="submit">Save Profile</button>
+
+      </form>
+
+    </div>
+
+  </div>
+
+</div>

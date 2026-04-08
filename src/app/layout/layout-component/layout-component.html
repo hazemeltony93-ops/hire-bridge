@@ -1,0 +1,82 @@
+<div class="layout">
+
+  <!-- Sidebar -->
+  <aside class="sidebar" [class.collapsed]="isSidebarCollapsed">
+
+    <!-- Logo -->
+    <div class="logo">
+      <div class="logo-box">HB</div>
+      <span class="logo-text" *ngIf="!isSidebarCollapsed">
+        HireBridge
+      </span>
+    </div>
+
+    <!-- Menu -->
+    <ul>
+
+      <li routerLink="/dashboard" routerLinkActive="active">
+        <i class="fas fa-home"></i>
+        <span>Dashboard</span>
+      </li>
+
+      <li routerLink="/jobs" routerLinkActive="active">
+        <i class="fas fa-briefcase"></i>
+        <span>Jobs</span>
+      </li>
+
+      <li routerLink="/candidates" routerLinkActive="active">
+        <i class="fas fa-users"></i>
+        <span>Candidates</span>
+      </li>
+
+      <li routerLink="/interviews" routerLinkActive="active">
+        <i class="fas fa-calendar"></i>
+        <span>Interviews</span>
+      </li>
+
+      <li routerLink="/profile" routerLinkActive="active">
+        <i class="fas fa-user"></i>
+        <span>Profile</span>
+      </li>
+
+      <li routerLink="/settings" routerLinkActive="active">
+        <i class="fas fa-cog"></i>
+        <span>Settings</span>
+      </li>
+
+    </ul>
+
+  </aside>
+
+  <!-- Main -->
+  <div class="main">
+
+    <!-- Topbar -->
+    <header class="topbar">
+
+      <div class="left">
+        <button class="menu-btn" (click)="toggleSidebar()">☰</button>
+        <h3 class="page-title">{{ pageTitle }}</h3>
+      </div>
+
+      <!-- User -->
+      <div class="user-menu" (click)="toggleMenu()">
+        <img [src]="user.image" class="avatar">
+        <span class="username">{{ user.name }}</span>
+
+        <div class="dropdown" *ngIf="menuOpen">
+          <p routerLink="/profile">Profile</p>
+          <p (click)="logout()">Logout</p>
+        </div>
+      </div>
+
+    </header>
+
+    <!-- Content -->
+    <main class="content">
+      <router-outlet></router-outlet>
+    </main>
+
+  </div>
+
+</div>
