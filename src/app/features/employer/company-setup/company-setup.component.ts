@@ -16,8 +16,8 @@ export class CompanySetupComponent {
   name = '';
   CompanyEmail = '';
   industry = '';
-  size: any = '';
-  budgetRange: any = '';
+  size: number | null = null;          // ✅ number بدل any
+  budgetRange: number | null = null;   // ✅ number بدل any
   website = '';
   logo = '';
 
@@ -30,8 +30,9 @@ export class CompanySetupComponent {
     private router: Router
   ) {}
 
+  // ✅ validation helper
   isEmpty(value: any) {
-    return !value || value.toString().trim() === '';
+    return value === null || value === undefined || value.toString().trim() === '';
   }
 
   onBlur(field: string) {
@@ -62,14 +63,7 @@ export class CompanySetupComponent {
     );
   }
 
-  // 🔥 يخلي input أرقام بس
-  allowOnlyNumbers(event: any) {
-    const charCode = event.which ? event.which : event.keyCode;
-    if (charCode < 48 || charCode > 57) {
-      event.preventDefault();
-    }
-  }
-
+  // 🚀 SUBMIT
   submit() {
 
     this.errorMsg = '';
@@ -81,17 +75,16 @@ export class CompanySetupComponent {
 
     const payload = {
       name: this.name,
-      CompanyEmail: this.CompanyEmail,
+      CompanyEmail: this.CompanyEmail.toLowerCase(),
       industry: this.industry,
-      size: Number(this.size),
       website: this.website,
-      logo: this.logo,
+      logo: this.logo || 'https://test.com/logo.png',
       role: 'employer',
 
       employerProfile: {
-        EmployerCompanyName: this.name, // 🔥 مطابق للباك
-        companySize: Number(this.size),
-        budgetRange: Number(this.budgetRange)
+        EmployerCompanyName: this.name,
+        companySize: this.size,          // ✅ خلاص number جاهز
+        budgetRange: this.budgetRange    // ✅ خلاص number جاهز
       }
     };
 
@@ -103,13 +96,21 @@ export class CompanySetupComponent {
 
       next: (res: any) => {
         this.loading = false;
+
         console.log('SUCCESS 👉', res);
-        this.router.navigate(['/employer/verify-email']);
+
+        // ✅ save email
+        localStorage.setItem('companyEmail', this.CompanyEmail);
+
+        // ✅ redirect
+        this.router.navigate(['/company-verify-email']);
       },
 
       error: (err: any) => {
         this.loading = false;
+
         console.log('ERROR 👉', err);
+
         this.errorMsg =
           err?.error?.message || 'Something went wrong ❌';
       }

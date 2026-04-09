@@ -31,9 +31,15 @@
           <label>Industry</label>
         </div>
 
-        <!-- SIZE 🔥 -->
+        <!-- SIZE ✅ -->
         <div class="field">
-          <input [(ngModel)]="size" name="size" placeholder=" " (keypress)="allowOnlyNumbers($event)" />
+          <input
+            type="number"
+            [(ngModel)]="size"
+            name="size"
+            placeholder=" "
+            (blur)="onBlur('size')"
+          />
           <label>Company Size</label>
         </div>
 
@@ -49,9 +55,15 @@
           <label>Logo URL</label>
         </div>
 
-        <!-- BUDGET 🔥 -->
+        <!-- BUDGET ✅ -->
         <div class="field">
-          <input [(ngModel)]="budgetRange" name="budgetRange" placeholder=" " (keypress)="allowOnlyNumbers($event)" />
+          <input
+            type="number"
+            [(ngModel)]="budgetRange"
+            name="budgetRange"
+            placeholder=" "
+            (blur)="onBlur('budgetRange')"
+          />
           <label>Budget Range</label>
         </div>
 

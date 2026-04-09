@@ -1,0 +1,59 @@
+<div class="container">
+  <div class="card">
+
+    <!-- LEFT -->
+    <div class="left">
+      <h2>Company Email Verification 📩</h2>
+      <p>Enter OTP sent to your company email</p>
+    </div>
+
+    <!-- RIGHT -->
+    <div class="right">
+
+      <h1>OTP Verification</h1>
+
+      <form (ngSubmit)="verify()">
+
+        <!-- EMAIL (READ ONLY زي الصورة) -->
+        <div class="floating-group">
+          <input
+            type="email"
+            [value]="email"
+            readonly
+            placeholder=" "
+          />
+          <label>Company Email</label>
+        </div>
+
+        <!-- OTP (نفس الأصل بالظبط) -->
+        <div class="otp-container">
+          <input maxlength="1" (input)="handleInput($event,0)" (keydown)="handleKeyDown($event,0)" />
+          <input maxlength="1" (input)="handleInput($event,1)" (keydown)="handleKeyDown($event,1)" />
+          <input maxlength="1" (input)="handleInput($event,2)" (keydown)="handleKeyDown($event,2)" />
+          <input maxlength="1" (input)="handleInput($event,3)" (keydown)="handleKeyDown($event,3)" />
+          <input maxlength="1" (input)="handleInput($event,4)" (keydown)="handleKeyDown($event,4)" />
+        </div>
+
+        <!-- SUCCESS -->
+        <div *ngIf="successMessage" class="success-box">
+          ✔ Company Verified Successfully
+        </div>
+
+        <!-- ERROR -->
+        <div *ngIf="errorMessage" class="error-box">
+          {{ errorMessage }}
+        </div>
+
+        <!-- BUTTON -->
+        <button type="submit">
+          {{ loading ? 'Verifying...' : 'Verify' }}
+        </button>
+
+      </form>
+
+      <p class="timer">Expires in {{ countdown }}s</p>
+
+    </div>
+
+  </div>
+</div>

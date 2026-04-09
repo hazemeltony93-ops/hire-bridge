@@ -19,7 +19,7 @@ export class AuthService {
     return this.http.post(`${this.baseUrl}/auth/login`, data);
   }
 
-  // 🔑 OTP
+  // 🔑 OTP (User)
   verifyOtp(email: string, otp: string) {
     return this.http.post(
       `${this.baseUrl}/auth/verifyOTPofPersonalEmail`,
@@ -27,16 +27,27 @@ export class AuthService {
     );
   }
 
-  // 🔥 HEADER (المهم)
+  // 🔥 NEW 👉 OTP (Company)
+  verifyCompanyOtp(email: string, otp: string) {
+    return this.http.post(
+      `${this.baseUrl}/company/verifyCompanyEmail`,
+      { email, otp },
+      {
+        headers: this.getAuthHeaders()
+      }
+    );
+  }
+
+  // 🔥 HEADER
   private getAuthHeaders(): HttpHeaders {
     const token = this.getToken();
 
     return new HttpHeaders({
-      auth: token || '' // ✅ زي ما هو
+      auth: token || ''
     });
   }
 
-  // ✅ 👤 GET CANDIDATE PROFILE (اضفناها بس)
+  // 👤 GET CANDIDATE PROFILE
   getCandidateProfile() {
     return this.http.get(
       `${this.baseUrl}/candidate/candidate-profile`,
@@ -46,7 +57,7 @@ export class AuthService {
     );
   }
 
-  // 👤 UPDATE PROFILE (سيبناه زي ما هو)
+  // 👤 UPDATE PROFILE
   updateCandidateProfile(data: any) {
     return this.http.put(
       `${this.baseUrl}/user/updateCandidateProfile`,
@@ -68,7 +79,7 @@ export class AuthService {
     );
   }
 
-  // 🔥 GET PROFILE (name + email)
+  // 👤 GET PROFILE
   getProfile() {
     return this.http.get(
       `${this.baseUrl}/user/profile`,
