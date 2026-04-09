@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
   selector: 'app-candidate-setup',
   imports: [CommonModule, FormsModule],
   templateUrl: './candidate-setup.component.html',
-  styleUrl: './candidate-setup.component.css'
+  styleUrls: ['./candidate-setup.component.css']
 })
 export class CandidateSetupComponent {
 
@@ -36,33 +36,32 @@ export class CandidateSetupComponent {
     private router: Router
   ) {}
 
-  isEmpty(value: any) {
+  // ✅ validation helper
+  isEmpty(value: any): boolean {
     return !value || value.toString().trim() === '';
   }
 
   // 🔥 ADD SKILL
   addSkill(event: any) {
-  event.preventDefault();
+    event.preventDefault();
 
-  const value = this.skillInput.trim();
+    const value = this.skillInput.trim();
 
-  if (value && !this.skills.includes(value)) {
-    this.skills.push(value);
+    if (value && !this.skills.includes(value)) {
+      this.skills.push(value);
+    }
+
+    this.skillInput = '';
   }
-
-  this.skillInput = '';
-}
 
   // 🔥 REMOVE SKILL
   removeSkill(index: number) {
     this.skills.splice(index, 1);
   }
 
-  submit() {
-    this.submitted = true;
-    this.errorMessage = '';
-
-    if (
+  // 🔥 VALIDATION
+  isValid(): boolean {
+    return !(
       this.isEmpty(this.candidate.specialization) ||
       this.isEmpty(this.candidate.experienceLevel) ||
       this.isEmpty(this.candidate.expectedSalary) ||
@@ -70,7 +69,16 @@ export class CandidateSetupComponent {
       this.isEmpty(this.candidate.cvUrl) ||
       this.skills.length === 0 ||
       this.isEmpty(this.candidate.status)
-    ) {
+    );
+  }
+
+  // 🚀 SUBMIT
+  submit() {
+
+    this.submitted = true;
+    this.errorMessage = '';
+
+    if (!this.isValid()) {
       this.errorMessage = 'Please fill all fields ❌';
       return;
     }
@@ -81,10 +89,16 @@ export class CandidateSetupComponent {
       candidateProfile: {
         specialization: this.candidate.specialization,
         experienceLevel: this.candidate.experienceLevel,
+
+        // 🔥 مهم تبقى number
         expectedSalary: Number(this.candidate.expectedSalary),
+
         workType: this.candidate.workType,
         cvUrl: this.candidate.cvUrl,
+
+        // 🔥 array skills
         skills: this.skills,
+
         status: this.candidate.status
       }
     };
@@ -97,14 +111,16 @@ export class CandidateSetupComponent {
         this.loading = false;
         this.success = true;
 
-        // 🔥 أهم سطر (حل المشكلة)
+        // ✅ redirect بعد النجاح
         setTimeout(() => {
           this.router.navigate(['/dashboard'], { replaceUrl: true });
-        }, 1000);
+        }, 800);
       },
 
       error: (err: any) => {
         this.loading = false;
+
+        console.log('ERROR 👉', err);
 
         this.errorMessage =
           err?.error?.message || 'Something went wrong ❌';

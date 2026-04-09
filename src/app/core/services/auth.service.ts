@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -27,34 +27,44 @@ export class AuthService {
     );
   }
 
-  // 👤 UPDATE PROFILE
-  updateCandidateProfile(data: any) {
-
+  // 🔥 HEADER (المهم)
+  private getAuthHeaders(): HttpHeaders {
     const token = this.getToken();
 
-    const headers = {
-      auth: token || ''
-    };
+    return new HttpHeaders({
+      auth: token || '' // ✅ ده الصح عندك
+    });
+  }
 
+  // 👤 UPDATE PROFILE
+  updateCandidateProfile(data: any) {
     return this.http.put(
       `${this.baseUrl}/user/updateCandidateProfile`,
       data,
-      { headers }
+      {
+        headers: this.getAuthHeaders()
+      }
+    );
+  }
+
+  // 🏢 CREATE COMPANY
+  createCompanyProfile(data: any) {
+    return this.http.post(
+      `${this.baseUrl}/company/companyProfile`,
+      data,
+      {
+        headers: this.getAuthHeaders()
+      }
     );
   }
 
   // 🔥 GET PROFILE
   getProfile() {
-
-    const token = this.getToken();
-
-    const headers = {
-      auth: token || ''
-    };
-
     return this.http.get(
       `${this.baseUrl}/user/profile`,
-      { headers }
+      {
+        headers: this.getAuthHeaders()
+      }
     );
   }
 

@@ -1,0 +1,73 @@
+<div class="container">
+  <div class="card">
+
+    <!-- LEFT -->
+    <div class="left">
+      <h2>Build Your Company 🏢</h2>
+      <p>Set up your company profile and start hiring</p>
+    </div>
+
+    <!-- RIGHT -->
+    <div class="right">
+      <h1>Company Setup</h1>
+
+      <form (ngSubmit)="submit()" class="form">
+
+        <!-- NAME -->
+        <div class="field">
+          <input [(ngModel)]="name" name="name" placeholder=" " (blur)="onBlur('name')" />
+          <label>Company Name</label>
+        </div>
+
+        <!-- EMAIL -->
+        <div class="field">
+          <input type="email" [(ngModel)]="CompanyEmail" name="CompanyEmail" placeholder=" " (blur)="onBlur('CompanyEmail')" />
+          <label>Company Email</label>
+        </div>
+
+        <!-- INDUSTRY -->
+        <div class="field">
+          <input [(ngModel)]="industry" name="industry" placeholder=" " (blur)="onBlur('industry')" />
+          <label>Industry</label>
+        </div>
+
+        <!-- SIZE 🔥 -->
+        <div class="field">
+          <input [(ngModel)]="size" name="size" placeholder=" " (keypress)="allowOnlyNumbers($event)" />
+          <label>Company Size</label>
+        </div>
+
+        <!-- WEBSITE -->
+        <div class="field">
+          <input [(ngModel)]="website" name="website" placeholder=" " />
+          <label>Website</label>
+        </div>
+
+        <!-- LOGO -->
+        <div class="field">
+          <input [(ngModel)]="logo" name="logo" placeholder=" " />
+          <label>Logo URL</label>
+        </div>
+
+        <!-- BUDGET 🔥 -->
+        <div class="field">
+          <input [(ngModel)]="budgetRange" name="budgetRange" placeholder=" " (keypress)="allowOnlyNumbers($event)" />
+          <label>Budget Range</label>
+        </div>
+
+        <!-- ERROR -->
+        <div class="error" *ngIf="errorMsg">
+          {{ errorMsg }}
+        </div>
+
+        <!-- BUTTON -->
+        <button type="submit" [disabled]="loading">
+          <span *ngIf="!loading">Create Company</span>
+          <span *ngIf="loading">Loading...</span>
+        </button>
+
+      </form>
+    </div>
+
+  </div>
+</div>

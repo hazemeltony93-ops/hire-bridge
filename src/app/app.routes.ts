@@ -43,6 +43,15 @@ export const routes: Routes = [
         .then(m => m.CandidateSetupComponent)
   },
 
+  // 🔥 ADD THIS (Company Setup)
+  {
+    path: 'company-setup',
+    canActivate: [AuthGuard],
+    loadComponent: () =>
+      import('./features/employer/company-setup/company-setup.component')
+        .then(m => m.CompanySetupComponent)
+  },
+
   {
     path: '',
     component: LayoutComponent,
