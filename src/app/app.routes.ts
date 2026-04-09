@@ -6,6 +6,7 @@ export const routes: Routes = [
 
   { path: '', redirectTo: 'login', pathMatch: 'full' },
 
+  // 🔐 AUTH
   {
     path: 'login',
     loadComponent: () =>
@@ -27,6 +28,7 @@ export const routes: Routes = [
         .then(m => m.VerifyEmailComponent)
   },
 
+  // 👤 AFTER LOGIN
   {
     path: 'choose-role',
     canActivate: [AuthGuard],
@@ -43,7 +45,6 @@ export const routes: Routes = [
         .then(m => m.CandidateSetupComponent)
   },
 
-  // 🔥 ADD THIS (Company Setup)
   {
     path: 'company-setup',
     canActivate: [AuthGuard],
@@ -52,28 +53,37 @@ export const routes: Routes = [
         .then(m => m.CompanySetupComponent)
   },
 
+  // 🧠 MAIN PAGES
+  {
+    path: 'dashboard',
+    canActivate: [AuthGuard],
+    loadComponent: () =>
+      import('./components/dashboard/dashboard.component')
+        .then(m => m.DashboardComponent)
+  },
+
+  {
+    path: 'profile',
+    canActivate: [AuthGuard],
+    loadComponent: () =>
+      import('./components/candidate/profile/profile.component')
+        .then(m => m.ProfileComponent)
+  },
+
+  // 🎨 LAYOUT (اختياري)
   {
     path: '',
     component: LayoutComponent,
     children: [
-
-      {
-        path: 'dashboard',
-        canActivate: [AuthGuard],
-        loadComponent: () =>
-          import('./components/dashboard/dashboard.component')
-            .then(m => m.DashboardComponent)
-      },
-
       {
         path: '',
         redirectTo: 'dashboard',
         pathMatch: 'full'
       }
-
     ]
   },
 
+  // ❌ NOT FOUND
   { path: '**', redirectTo: 'login' }
 
 ];

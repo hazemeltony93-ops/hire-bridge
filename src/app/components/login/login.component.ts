@@ -8,7 +8,7 @@ import { AuthService } from '../../core/services/auth.service';
   standalone: true,
   imports: [CommonModule, FormsModule, RouterModule],
   templateUrl: './login.component.html',
-  styleUrl: './login.component.css'
+  styleUrls: ['./login.component.css'] // ✅ تصحيح (styleUrls مش styleUrl)
 })
 export class LoginComponent {
 
@@ -53,22 +53,32 @@ export class LoginComponent {
       password: this.password
     }).subscribe({
 
-      // 🔥 الحل هنا
       next: (res: any) => {
         this.loading = false;
 
         console.log('LOGIN RESPONSE 👉', res);
 
-        // ✅ save token
-        if (res?.token) {
-          this.auth.saveToken(res.token);
-        }
+        // ✅ استخراج التوكن بشكل آمن
+        const token = res?.token || res?.accessToken || res?.data?.token;
 
-        this.router.navigate(['/dashboard']);
+        if (token) {
+          this.auth.saveToken(token);
+          console.log('TOKEN SAVED ✅', token);
+
+          // 🔥 تأخير بسيط يضمن إن guard يقرأ التوكن
+          setTimeout(() => {
+            this.router.navigate(['/dashboard']);
+          }, 50);
+
+        } else {
+          this.errorMsg = 'No token received ❌';
+        }
       },
 
       error: (err: any) => {
         this.loading = false;
+
+        console.error('LOGIN ERROR ❌', err);
 
         this.errorMsg =
           err?.error?.message || 'Login failed ❌';

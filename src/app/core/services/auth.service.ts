@@ -32,11 +32,21 @@ export class AuthService {
     const token = this.getToken();
 
     return new HttpHeaders({
-      auth: token || '' // ✅ ده الصح عندك
+      auth: token || '' // ✅ زي ما هو
     });
   }
 
-  // 👤 UPDATE PROFILE
+  // ✅ 👤 GET CANDIDATE PROFILE (اضفناها بس)
+  getCandidateProfile() {
+    return this.http.get(
+      `${this.baseUrl}/candidate/candidate-profile`,
+      {
+        headers: this.getAuthHeaders()
+      }
+    );
+  }
+
+  // 👤 UPDATE PROFILE (سيبناه زي ما هو)
   updateCandidateProfile(data: any) {
     return this.http.put(
       `${this.baseUrl}/user/updateCandidateProfile`,
@@ -58,7 +68,7 @@ export class AuthService {
     );
   }
 
-  // 🔥 GET PROFILE
+  // 🔥 GET PROFILE (name + email)
   getProfile() {
     return this.http.get(
       `${this.baseUrl}/user/profile`,

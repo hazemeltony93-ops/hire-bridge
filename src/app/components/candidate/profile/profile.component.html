@@ -1,45 +1,53 @@
-<div class="profile-page">
+<div class="auth-container">
 
-  <div class="profile-card">
+  <!-- Left (نفسه بالظبط) -->
+  <div class="auth-left">
+    <h2>Your Profile 👤</h2>
+    <p>Manage your professional data</p>
+  </div>
 
-    <!-- Left -->
-    <div class="left">
+  <!-- Right -->
+  <div class="auth-right">
 
-      <div class="avatar">
-        <img src="https://i.pravatar.cc/100">
-      </div>
+    <form [formGroup]="profileForm" (ngSubmit)="submit()">
 
-      <h2>{{ profileForm.value.name || 'Your Name' }}</h2>
-      <p>{{ profileForm.value.email || 'email@example.com' }}</p>
+      <input 
+        class="auth-input"
+        type="text"
+        formControlName="specialization"
+        placeholder="Specialization"
+      >
 
-    </div>
+      <select 
+        class="auth-input"
+        formControlName="experienceLevel">
+        <option value="">Experience Level</option>
+        <option value="Junior">Junior</option>
+        <option value="Mid">Mid</option>
+        <option value="Senior">Senior</option>
+      </select>
 
-    <!-- Right -->
-    <div class="right">
+      <input 
+        class="auth-input"
+        type="number"
+        formControlName="expectedSalary"
+        placeholder="Expected Salary"
+      >
 
-      <h2>Edit Profile</h2>
+      <select 
+        class="auth-input"
+        formControlName="workType">
+        <option value="">Work Type</option>
+        <option value="Full Time">Full Time</option>
+        <option value="Part Time">Part Time</option>
+        <option value="Remote">Remote</option>
+      </select>
 
-      <form [formGroup]="profileForm" (ngSubmit)="submit()">
+      <button class="auth-btn" type="submit">
+        Save Profile
+      </button>
 
-        <input type="text" formControlName="name" placeholder="Name">
-
-        <input type="email" formControlName="email" placeholder="Email">
-
-        <input type="number" formControlName="experience" placeholder="Experience">
-
-        <input type="number" formControlName="salary" placeholder="Salary">
-
-        <select formControlName="workType">
-          <option>Full Time</option>
-          <option>Part Time</option>
-          <option>Remote</option>
-        </select>
-
-        <button type="submit">Save Profile</button>
-
-      </form>
-
-    </div>
+    </form>
 
   </div>
 
