@@ -45,9 +45,7 @@ export class VerifyEmailComponent implements OnInit, OnDestroy {
     }, 100);
   }
 
-  // =============================
   // ⏱ TIMER
-  // =============================
   startTimer() {
     this.countdown = 60;
 
@@ -60,9 +58,7 @@ export class VerifyEmailComponent implements OnInit, OnDestroy {
     });
   }
 
-  // =============================
   // 🔢 INPUT
-  // =============================
   handleInput(event: any, index: number) {
     const input = event.target;
     let value = input.value.replace(/[^0-9]/g, '');
@@ -79,9 +75,7 @@ export class VerifyEmailComponent implements OnInit, OnDestroy {
     }
   }
 
-  // =============================
   // ⬅️ BACKSPACE
-  // =============================
   handleKeyDown(event: any, index: number) {
     if (event.key === 'Backspace') {
       if (this.otp[index]) {
@@ -96,9 +90,7 @@ export class VerifyEmailComponent implements OnInit, OnDestroy {
     }
   }
 
-  // =============================
   // ✅ VERIFY
-  // =============================
   verify() {
     if (this.loading) return;
 
@@ -137,7 +129,7 @@ export class VerifyEmailComponent implements OnInit, OnDestroy {
 
         this.successMessage = 'Verified successfully 🎉';
 
-        // 🔥 مهم جدًا: يمنع الرجوع
+        // 🚀 🔥 دايمًا choose-role
         setTimeout(() => {
           this.router.navigate(['/choose-role'], { replaceUrl: true });
         }, 1000);

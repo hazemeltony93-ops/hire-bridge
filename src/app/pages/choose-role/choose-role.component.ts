@@ -32,12 +32,15 @@ export class ChooseRoleComponent {
 
     this.loading = true;
 
-    // ✅ save role
+    // ✅ حفظ role جوه user (اختياري)
     const user = JSON.parse(localStorage.getItem('user') || '{}');
     user.role = this.selectedRole;
     localStorage.setItem('user', JSON.stringify(user));
 
-    // 🔥 navigate + منع الرجوع
+    // 🔥 المهم جدًا (عشان RoleGuard)
+    localStorage.setItem('role', this.selectedRole);
+
+    // 🚀 navigation
     setTimeout(() => {
       if (this.selectedRole === 'candidate') {
         this.router.navigate(['/candidate-setup'], { replaceUrl: true });

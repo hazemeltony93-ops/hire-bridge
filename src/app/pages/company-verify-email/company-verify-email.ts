@@ -3,7 +3,8 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { interval, Subscription } from 'rxjs';
-import { AuthService } from '../../core/services/auth.service';
+
+import { CompanyService } from '../../core/services/company.service';
 
 @Component({
   standalone: true,
@@ -26,7 +27,7 @@ export class CompanyVerifyEmailComponent implements OnInit, OnDestroy {
 
   constructor(
     private router: Router,
-    private auth: AuthService
+    private company: CompanyService
   ) {}
 
   ngOnInit() {
@@ -45,7 +46,6 @@ export class CompanyVerifyEmailComponent implements OnInit, OnDestroy {
     }, 100);
   }
 
-  // ⏱ TIMER
   startTimer() {
     this.countdown = 60;
 
@@ -58,7 +58,6 @@ export class CompanyVerifyEmailComponent implements OnInit, OnDestroy {
     });
   }
 
-  // 🔢 INPUT
   handleInput(event: any, index: number) {
     const input = event.target;
     let value = input.value.replace(/[^0-9]/g, '');
@@ -75,7 +74,6 @@ export class CompanyVerifyEmailComponent implements OnInit, OnDestroy {
     }
   }
 
-  // ⬅️ BACKSPACE
   handleKeyDown(event: any, index: number) {
     if (event.key === 'Backspace') {
       if (this.otp[index]) {
@@ -90,7 +88,6 @@ export class CompanyVerifyEmailComponent implements OnInit, OnDestroy {
     }
   }
 
-  // ✅ VERIFY
   verify() {
     if (this.loading) return;
 
@@ -110,8 +107,7 @@ export class CompanyVerifyEmailComponent implements OnInit, OnDestroy {
     this.errorMessage = '';
     this.successMessage = '';
 
-    // 🔥 هنا التعديل المهم
-    this.auth.verifyCompanyOtp(this.email, code).subscribe({
+    this.company.verifyCompanyOtp(this.email, code).subscribe({
       next: () => {
         this.loading = false;
 
@@ -119,8 +115,9 @@ export class CompanyVerifyEmailComponent implements OnInit, OnDestroy {
 
         this.successMessage = 'Company verified 🎉';
 
+        // 🔥 هنا التعديل
         setTimeout(() => {
-          this.router.navigate(['/login'], { replaceUrl: true });
+          this.router.navigate(['/dashboard'], { replaceUrl: true });
         }, 1000);
       },
 

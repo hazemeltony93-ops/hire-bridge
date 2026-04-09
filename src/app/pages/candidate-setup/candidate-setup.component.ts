@@ -1,8 +1,10 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { AuthService } from '../../core/services/auth.service';
 import { Router } from '@angular/router';
+
+// 🔥 بدل AuthService
+import { CandidateService } from '../../core/services/candidate.service';
 
 @Component({
   standalone: true,
@@ -32,7 +34,7 @@ export class CandidateSetupComponent {
   };
 
   constructor(
-    private auth: AuthService,
+    private candidateService: CandidateService, // ✅ هنا التعديل
     private router: Router
   ) {}
 
@@ -90,14 +92,12 @@ export class CandidateSetupComponent {
         specialization: this.candidate.specialization,
         experienceLevel: this.candidate.experienceLevel,
 
-        // 🔥 مهم تبقى number
-        expectedSalary: Number(this.candidate.expectedSalary),
+        expectedSalary: Number(this.candidate.expectedSalary), // 🔥 number
 
         workType: this.candidate.workType,
         cvUrl: this.candidate.cvUrl,
 
-        // 🔥 array skills
-        skills: this.skills,
+        skills: this.skills, // 🔥 array
 
         status: this.candidate.status
       }
@@ -105,13 +105,13 @@ export class CandidateSetupComponent {
 
     console.log('FINAL PAYLOAD 👉', payload);
 
-    this.auth.updateCandidateProfile(payload).subscribe({
+    // 🔥 هنا التعديل
+    this.candidateService.updateCandidateProfile(payload).subscribe({
 
       next: () => {
         this.loading = false;
         this.success = true;
 
-        // ✅ redirect بعد النجاح
         setTimeout(() => {
           this.router.navigate(['/dashboard'], { replaceUrl: true });
         }, 800);

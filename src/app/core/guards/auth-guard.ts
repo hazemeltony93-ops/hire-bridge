@@ -16,13 +16,11 @@ export class AuthGuard implements CanActivate {
 
     const token = this.auth.getToken();
 
-    // ❌ مش logged in
     if (!token) {
       this.router.navigate(['/login'], { replaceUrl: true });
       return false;
     }
 
-    // ✅ logged in
     return true;
   }
 }

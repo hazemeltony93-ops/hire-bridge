@@ -61,7 +61,7 @@ export class LoginComponent {
         // ✅ token
         const token = res?.token || res?.accessToken || res?.data?.token;
 
-        // ✅ role
+        // ✅ role (اختياري نحفظه)
         const role =
           res?.user?.role ||
           res?.data?.user?.role ||
@@ -71,23 +71,14 @@ export class LoginComponent {
           this.auth.saveToken(token);
           console.log('TOKEN SAVED ✅', token);
 
-          // 🔥 save role
           if (role) {
             localStorage.setItem('role', role);
             console.log('ROLE SAVED ✅', role);
           }
 
-          // 🚀 redirect
+          // 🚀 دايركت على الداشبورد
           setTimeout(() => {
-
-            if (role === 'candidate') {
-              this.router.navigate(['/choose-role']);
-            } else if (role === 'employer') {
-              this.router.navigate(['/choose-role']);
-            } else {
-              this.router.navigate(['/dashboard']);
-            }
-
+            this.router.navigate(['/dashboard'], { replaceUrl: true });
           }, 50);
 
         } else {

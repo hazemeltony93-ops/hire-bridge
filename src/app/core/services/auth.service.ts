@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -19,73 +19,10 @@ export class AuthService {
     return this.http.post(`${this.baseUrl}/auth/login`, data);
   }
 
-  // 🔑 OTP (User)
   verifyOtp(email: string, otp: string) {
     return this.http.post(
       `${this.baseUrl}/auth/verifyOTPofPersonalEmail`,
       { email, otp }
-    );
-  }
-
-  // 🔥 NEW 👉 OTP (Company)
-  verifyCompanyOtp(email: string, otp: string) {
-    return this.http.post(
-      `${this.baseUrl}/company/verifyCompanyEmail`,
-      { email, otp },
-      {
-        headers: this.getAuthHeaders()
-      }
-    );
-  }
-
-  // 🔥 HEADER
-  private getAuthHeaders(): HttpHeaders {
-    const token = this.getToken();
-
-    return new HttpHeaders({
-      auth: token || ''
-    });
-  }
-
-  // 👤 GET CANDIDATE PROFILE
-  getCandidateProfile() {
-    return this.http.get(
-      `${this.baseUrl}/candidate/candidate-profile`,
-      {
-        headers: this.getAuthHeaders()
-      }
-    );
-  }
-
-  // 👤 UPDATE PROFILE
-  updateCandidateProfile(data: any) {
-    return this.http.put(
-      `${this.baseUrl}/user/updateCandidateProfile`,
-      data,
-      {
-        headers: this.getAuthHeaders()
-      }
-    );
-  }
-
-  // 🏢 CREATE COMPANY
-  createCompanyProfile(data: any) {
-    return this.http.post(
-      `${this.baseUrl}/company/companyProfile`,
-      data,
-      {
-        headers: this.getAuthHeaders()
-      }
-    );
-  }
-
-  // 👤 GET PROFILE
-  getProfile() {
-    return this.http.get(
-      `${this.baseUrl}/user/profile`,
-      {
-        headers: this.getAuthHeaders()
-      }
     );
   }
 
@@ -104,5 +41,19 @@ export class AuthService {
 
   isLoggedIn(): boolean {
     return !!this.getToken();
+  }
+
+  // 🔥 NEW 👉 decode token
+  getUserFromToken(): any {
+    const token = this.getToken();
+
+    if (!token) return null;
+
+    try {
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      return payload;
+    } catch {
+      return null;
+    }
   }
 }

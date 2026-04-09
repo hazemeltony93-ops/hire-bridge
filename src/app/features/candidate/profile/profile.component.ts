@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { AuthService } from '../../../core/services/auth.service';
+
+// 🔥 بدل AuthService
+import { CandidateService } from '../../../core/services/candidate.service';
 
 @Component({
   selector: 'app-profile',
@@ -14,7 +16,10 @@ export class ProfileComponent implements OnInit {
 
   profileForm: any;
 
-  constructor(private fb: FormBuilder, private auth: AuthService) {
+  constructor(
+    private fb: FormBuilder,
+    private candidate: CandidateService // ✅ هنا التعديل
+  ) {
     this.profileForm = this.fb.group({
       specialization: [''],
       experienceLevel: [''],
@@ -29,7 +34,7 @@ export class ProfileComponent implements OnInit {
 
   // 🔥 GET PROFILE
   loadProfile() {
-    this.auth.getCandidateProfile().subscribe({
+    this.candidate.getCandidateProfile().subscribe({
       next: (res: any) => {
 
         console.log('PROFILE 👉', res);
@@ -45,13 +50,13 @@ export class ProfileComponent implements OnInit {
           workType: profile.workType
         });
       },
-      error: (err) => {
+      error: (err: any) => { // ✅ fix TS error
         console.error('ERROR ❌', err);
       }
     });
   }
 
-  // 🔥 UPDATE PROFILE (FIXED)
+  // 🔥 UPDATE PROFILE
   submit() {
 
     const form = this.profileForm.value;
@@ -62,19 +67,18 @@ export class ProfileComponent implements OnInit {
         experienceLevel: form.experienceLevel,
         expectedSalary: +form.expectedSalary,
         workType: form.workType,
-        cvUrl: "cv-link",       // ثابت مؤقت
-        skills: ["angular"]     // ثابت مؤقت
+        cvUrl: "cv-link",       // مؤقت
+        skills: ["angular"]     // مؤقت
       }
     };
 
-    this.auth.updateCandidateProfile(body).subscribe({
+    this.candidate.updateCandidateProfile(body).subscribe({
       next: () => {
         alert('Updated Successfully 🔥');
 
-        // 🔥 أهم خطوة
-        this.loadProfile();
+        this.loadProfile(); // 🔥 reload
       },
-      error: (err) => {
+      error: (err: any) => { // ✅ fix TS error
         console.error('UPDATE ERROR ❌', err);
       }
     });

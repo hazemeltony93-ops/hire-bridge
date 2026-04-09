@@ -2,7 +2,9 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule, Router } from '@angular/router';
-import { AuthService } from '../../../core/services/auth.service';
+
+// 🔥 بدل AuthService
+import { CompanyService } from '../../../core/services/company.service';
 
 @Component({
   standalone: true,
@@ -16,8 +18,8 @@ export class CompanySetupComponent {
   name = '';
   CompanyEmail = '';
   industry = '';
-  size: number | null = null;          // ✅ number بدل any
-  budgetRange: number | null = null;   // ✅ number بدل any
+  size: number | null = null;
+  budgetRange: number | null = null;
   website = '';
   logo = '';
 
@@ -26,11 +28,10 @@ export class CompanySetupComponent {
   touched: any = {};
 
   constructor(
-    private auth: AuthService,
+    private company: CompanyService, // ✅ هنا التعديل
     private router: Router
   ) {}
 
-  // ✅ validation helper
   isEmpty(value: any) {
     return value === null || value === undefined || value.toString().trim() === '';
   }
@@ -83,8 +84,8 @@ export class CompanySetupComponent {
 
       employerProfile: {
         EmployerCompanyName: this.name,
-        companySize: this.size,          // ✅ خلاص number جاهز
-        budgetRange: this.budgetRange    // ✅ خلاص number جاهز
+        companySize: this.size,
+        budgetRange: this.budgetRange
       }
     };
 
@@ -92,17 +93,16 @@ export class CompanySetupComponent {
 
     this.loading = true;
 
-    this.auth.createCompanyProfile(payload).subscribe({
+    // 🔥 هنا التعديل
+    this.company.createCompanyProfile(payload).subscribe({
 
       next: (res: any) => {
         this.loading = false;
 
         console.log('SUCCESS 👉', res);
 
-        // ✅ save email
         localStorage.setItem('companyEmail', this.CompanyEmail);
 
-        // ✅ redirect
         this.router.navigate(['/company-verify-email']);
       },
 

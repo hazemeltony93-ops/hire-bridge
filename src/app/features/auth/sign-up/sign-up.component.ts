@@ -82,16 +82,14 @@ export class SignupComponent {
 
     this.auth.register(data).subscribe({
 
-      // 🔥 الحل هنا
       next: (res: any) => {
         this.loading = false;
 
         console.log('SIGNUP RESPONSE 👉', res);
 
-        if (res?.token) {
-          this.auth.saveToken(res.token);
-        }
+        // ❌ مهم جدًا: متحفظش token هنا
 
+        // 🔥 خزّن الإيميل بس
         localStorage.setItem('signupEmail', this.email);
 
         setTimeout(() => {
