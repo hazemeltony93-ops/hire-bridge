@@ -1,82 +1,83 @@
 <div class="layout">
-
-  <!-- Sidebar -->
   <aside class="sidebar" [class.collapsed]="isSidebarCollapsed">
-
-    <!-- Logo -->
     <div class="logo">
       <div class="logo-box">HB</div>
-      <span class="logo-text" *ngIf="!isSidebarCollapsed">
-        HireBridge
-      </span>
+      <div class="brand-copy" *ngIf="!isSidebarCollapsed">
+        <span class="logo-text">HireBridge</span>
+        <small>Career Platform</small>
+      </div>
     </div>
 
-    <!-- Menu -->
-    <ul>
-
-      <li routerLink="/dashboard" routerLinkActive="active">
-        <i class="fas fa-home"></i>
-        <span>Dashboard</span>
+    <ul class="sidebar-menu">
+      <li
+        *ngFor="let item of menuItems"
+        [routerLink]="item.link"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: item.exact ?? false }"
+      >
+        <i [class]="item.icon"></i>
+        <span>{{ item.label }}</span>
       </li>
-
-      <li routerLink="/jobs" routerLinkActive="active">
-        <i class="fas fa-briefcase"></i>
-        <span>Jobs</span>
-      </li>
-
-      <li routerLink="/candidates" routerLinkActive="active">
-        <i class="fas fa-users"></i>
-        <span>Candidates</span>
-      </li>
-
-      <li routerLink="/interviews" routerLinkActive="active">
-        <i class="fas fa-calendar"></i>
-        <span>Interviews</span>
-      </li>
-
-      <li routerLink="/profile" routerLinkActive="active">
-        <i class="fas fa-user"></i>
-        <span>Profile</span>
-      </li>
-
-      <li routerLink="/settings" routerLinkActive="active">
-        <i class="fas fa-cog"></i>
-        <span>Settings</span>
-      </li>
-
     </ul>
 
+    <div class="sidebar-footer" *ngIf="!isSidebarCollapsed">
+      <button type="button" class="hire-btn">
+        <i class="fas fa-briefcase"></i>
+        Explore Talent
+      </button>
+
+      <button type="button" class="footer-link">
+        <i class="fas fa-circle-question"></i>
+        Support
+      </button>
+
+      <button type="button" class="footer-link" (click)="logout()">
+        <i class="fas fa-arrow-right-from-bracket"></i>
+        Log Out
+      </button>
+    </div>
   </aside>
 
-  <!-- Main -->
   <div class="main">
-
-    <!-- Topbar -->
     <header class="topbar">
-
-      <div class="left">
-        <button class="menu-btn" (click)="toggleSidebar()">☰</button>
-        <h3 class="page-title">{{ pageTitle }}</h3>
+      <div class="topbar-left">
+        <label class="topbar-search" aria-label="Search">
+          <i class="fas fa-search"></i>
+          <input type="search" placeholder="Search employees, files, or tasks..." />
+        </label>
       </div>
 
-      <!-- User -->
-      <div class="user-menu" (click)="toggleMenu()">
-        <img [src]="user.image" class="avatar">
-        <span class="username">{{ user.name }}</span>
+      <div class="topbar-actions">
+        <button class="icon-btn" type="button" aria-label="Notifications">
+          <i class="fas fa-bell"></i>
+        </button>
+        <button class="icon-btn" type="button" aria-label="Help">
+          <i class="fas fa-question"></i>
+        </button>
 
-        <div class="dropdown" *ngIf="menuOpen">
-          <p routerLink="/profile">Profile</p>
-          <p (click)="logout()">Logout</p>
+        <div class="user-menu" (click)="toggleMenu()">
+        <div class="user-info">
+          <span class="username">{{ userName }}</span>
+          <small>{{ currentRole === 'employer' ? 'Employer Panel' : 'Candidate Portal' }}</small>
+        </div>
+          <div class="avatar-wrapper">
+            <span class="avatar-text">{{ userName.charAt(0) }}</span>
+          </div>
+
+          <div class="dropdown" *ngIf="menuOpen">
+            <button type="button" class="dropdown-link" (click)="logout()">
+              <i class="fas fa-arrow-right-from-bracket"></i>
+              Logout
+            </button>
+          </div>
         </div>
       </div>
-
     </header>
 
-    <!-- Content -->
     <main class="content">
       <router-outlet></router-outlet>
     </main>
-
   </div>
 
+  <app-toast-outlet></app-toast-outlet>
 </div>

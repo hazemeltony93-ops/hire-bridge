@@ -1,9 +1,8 @@
-import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { RouterModule, Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 
-// 🔥 بدل AuthService
 import { CompanyService } from '../../../core/services/company.service';
 
 @Component({
@@ -14,7 +13,6 @@ import { CompanyService } from '../../../core/services/company.service';
   styleUrls: ['./company-setup.component.css']
 })
 export class CompanySetupComponent {
-
   name = '';
   CompanyEmail = '';
   industry = '';
@@ -28,19 +26,19 @@ export class CompanySetupComponent {
   touched: any = {};
 
   constructor(
-    private company: CompanyService, // ✅ هنا التعديل
+    private company: CompanyService,
     private router: Router
   ) {}
 
-  isEmpty(value: any) {
+  isEmpty(value: any): boolean {
     return value === null || value === undefined || value.toString().trim() === '';
   }
 
-  onBlur(field: string) {
+  onBlur(field: string): void {
     this.touched[field] = true;
   }
 
-  markAllTouched() {
+  markAllTouched(): void {
     this.touched = {
       name: true,
       CompanyEmail: true,
@@ -64,9 +62,7 @@ export class CompanySetupComponent {
     );
   }
 
-  // 🚀 SUBMIT
-  submit() {
-
+  submit(): void {
     this.errorMsg = '';
 
     if (!this.isValid()) {
@@ -81,7 +77,6 @@ export class CompanySetupComponent {
       website: this.website,
       logo: this.logo || 'https://test.com/logo.png',
       role: 'employer',
-
       employerProfile: {
         EmployerCompanyName: this.name,
         companySize: this.size,
@@ -89,30 +84,34 @@ export class CompanySetupComponent {
       }
     };
 
-    console.log('FINAL PAYLOAD 👉', payload);
-
+    console.log('Company setup payload:', payload);
     this.loading = true;
 
-    // 🔥 هنا التعديل
     this.company.createCompanyProfile(payload).subscribe({
-
       next: (res: any) => {
         this.loading = false;
+        console.log('Company setup response:', res);
 
-        console.log('SUCCESS 👉', res);
+        const companyId =
+          res?.company?._id ||
+          res?.company?.id ||
+          res?.data?.company?._id ||
+          res?.data?.company?.id ||
+          res?.companyId ||
+          res?.data?.companyId ||
+          null;
+
+        if (companyId) {
+          localStorage.setItem('companyId', companyId);
+        }
 
         localStorage.setItem('companyEmail', this.CompanyEmail);
-
         this.router.navigate(['/company-verify-email']);
       },
-
       error: (err: any) => {
         this.loading = false;
-
-        console.log('ERROR 👉', err);
-
-        this.errorMsg =
-          err?.error?.message || 'Something went wrong ❌';
+        console.error('Company setup error:', err);
+        this.errorMsg = err?.error?.message || 'Something went wrong.';
       }
     });
   }

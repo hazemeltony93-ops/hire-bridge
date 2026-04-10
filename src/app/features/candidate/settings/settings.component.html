@@ -1,0 +1,38 @@
+<div class="architect-page">
+  <header class="jobs-heading">
+    <div>
+      <span class="section-kicker">HireBridge</span>
+      <h1>Settings</h1>
+      <p>Manage your account details, session state, and access controls.</p>
+    </div>
+  </header>
+
+  <section class="settings-grid">
+    <article class="setting-card">
+      <span>Email</span>
+      <strong>{{ user?.email || 'Not available' }}</strong>
+      <i class="fas fa-envelope"></i>
+    </article>
+    <article class="setting-card">
+      <span>Role</span>
+      <strong>{{ user?.role || 'candidate' }}</strong>
+      <i class="fas fa-user-shield"></i>
+    </article>
+    <article class="setting-card blue">
+      <span>Token Status</span>
+      <strong>{{ user ? 'Active' : 'Expired' }}</strong>
+      <p>{{ user ? 'Session healthy' : 'Log in again' }} <i class="fas fa-arrow-right"></i></p>
+    </article>
+  </section>
+
+  <section class="settings-panel">
+    <div>
+      <h2>Account Controls</h2>
+      <p>Use these actions to manage your current account session.</p>
+    </div>
+    <button type="button" (click)="logout()">
+      <i class="fas fa-arrow-right-from-bracket"></i>
+      Log out
+    </button>
+  </section>
+</div>

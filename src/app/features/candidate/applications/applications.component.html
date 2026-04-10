@@ -1,0 +1,62 @@
+<div class="architect-page">
+  <header class="jobs-heading">
+    <div>
+      <span class="section-kicker">HireBridge</span>
+      <h1>Applications</h1>
+      <p>Track every role you applied for and follow the latest status updates.</p>
+    </div>
+  </header>
+
+  <section class="filter-line">
+    <div class="tabs">
+      <button type="button" class="active">All ({{ filteredApplications.length }})</button>
+      <button type="button">Pending</button>
+      <button type="button">Accepted</button>
+      <button type="button">Rejected</button>
+    </div>
+    <div class="filters">
+      <input type="text" [(ngModel)]="searchTerm" placeholder="Search by role or company" />
+      <select [(ngModel)]="statusFilter">
+        <option value="all">All statuses</option>
+        <option value="pending">Pending</option>
+        <option value="accepted">Accepted</option>
+        <option value="rejected">Rejected</option>
+      </select>
+    </div>
+  </section>
+
+  <div *ngIf="loading" class="posting-list">
+    <div class="application-row skeleton-row" *ngFor="let item of [1,2,3,4]">
+      <div class="skeleton-line"></div>
+      <div class="skeleton-line w-50"></div>
+    </div>
+  </div>
+
+  <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
+
+  <section *ngIf="!loading && filteredApplications.length > 0" class="posting-list">
+    <article class="application-row" *ngFor="let app of filteredApplications; let i = index">
+      <div class="posting-icon" [class.alt]="i % 2 === 1">
+        <i class="fas fa-file-lines"></i>
+      </div>
+      <div>
+        <h2>{{ app.jobTitle || app.title || 'Role not available' }}</h2>
+        <p>{{ app.companyName || app.company || 'Company unavailable' }}</p>
+      </div>
+      <div class="application-status">
+        <span class="badge text-capitalize" [ngClass]="getStatusBadgeClass(app.status)">
+          {{ app.status || 'Pending' }}
+        </span>
+        <small>{{ app.createdAt ? (app.createdAt | date:'shortDate') : 'Recently' }}</small>
+      </div>
+      <button type="button" class="more-btn">
+        <i class="fas fa-ellipsis-vertical"></i>
+      </button>
+    </article>
+  </section>
+
+  <section *ngIf="!loading && filteredApplications.length === 0" class="empty-state">
+    <h2>No applications match your filters.</h2>
+    <p>Try changing the search terms or status filter.</p>
+  </section>
+</div>

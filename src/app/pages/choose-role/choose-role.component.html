@@ -1,43 +1,61 @@
-<div class="container">
-  <div class="card role-card">
+<div class="auth-shell">
+  <section class="brand-header">
+    <div class="brand-mark">HB</div>
+    <h1>HireBridge</h1>
+    <p>Enterprise hiring and career workflows redefined</p>
+  </section>
 
-    <h1>Choose Your Role</h1>
-    <p>Select how you want to use the platform</p>
+  <section class="auth-card role-card">
+    <div class="card-header">
+      <h2>Choose your role</h2>
+      <p>Select how you want to use the platform</p>
+    </div>
 
     <div class="roles">
-
-      <!-- CANDIDATE -->
-      <div
+      <button
+        type="button"
         class="role-box"
         [class.active]="selectedRole === 'candidate'"
         (click)="selectRole('candidate')"
       >
-        <h3>👨‍💻 Candidate</h3>
-        <p>Find jobs and apply easily</p>
-      </div>
+        <div class="role-icon">
+          <i class="fas fa-user-tie"></i>
+        </div>
+        <h3>Candidate</h3>
+        <p>Find jobs, complete your profile, and apply easily.</p>
+      </button>
 
-      <!-- EMPLOYER -->
-      <div
+      <button
+        type="button"
         class="role-box"
         [class.active]="selectedRole === 'employer'"
         (click)="selectRole('employer')"
       >
-        <h3>🏢 Employer</h3>
-        <p>Post jobs and hire talents</p>
-      </div>
-
+        <div class="role-icon">
+          <i class="fas fa-building"></i>
+        </div>
+        <h3>Employer</h3>
+        <p>Create your company space, post jobs, and hire talents.</p>
+      </button>
     </div>
 
-    <!-- ERROR -->
     <div class="error shake" *ngIf="error">
-      Please select a role ❌
+      Please select a role
     </div>
 
-    <!-- BUTTON -->
-    <button (click)="continue()" [disabled]="loading">
-      <span *ngIf="!loading">Continue</span>
+    <button type="button" class="primary-btn" (click)="continue()" [disabled]="loading">
+      <span *ngIf="!loading">Continue <i class="fas fa-arrow-right"></i></span>
       <span *ngIf="loading" class="loader"></span>
     </button>
+  </section>
 
-  </div>
+  <footer class="page-footer">
+    <span>&copy; 2026 HireBridge. All rights reserved.</span>
+    <nav>
+      <a href="#">Privacy Policy</a>
+      <a href="#">Terms of Service</a>
+      <a href="#">Security</a>
+      <a href="#">Contact Support</a>
+    </nav>
+  </footer>
 </div>

@@ -1,0 +1,82 @@
+<div class="dashboard-shell">
+  <section class="hero-panel">
+    <div class="hero-copy">
+      <p class="eyebrow">Employer Overview</p>
+      <h1>Employer Dashboard</h1>
+      <p class="subtitle">Track open roles, review fresh applicants, and move promising candidates forward without leaving your dashboard.</p>
+      <div class="hero-actions">
+        <a routerLink="/employer/jobs" class="primary-btn">Manage jobs</a>
+        <a routerLink="/employer/jobs/job-001/applicants" class="secondary-btn">Review applicants</a>
+      </div>
+    </div>
+
+    <div class="hero-card">
+      <div class="hero-card-header">
+        <div>
+          <p class="card-label">Hiring Snapshot</p>
+          <h2>{{ stats.jobs }}</h2>
+        </div>
+        <span class="badge">Mock</span>
+      </div>
+
+      <div class="hero-summary">
+        <article>
+          <p>Open jobs</p>
+          <strong>{{ stats.jobs }}</strong>
+        </article>
+        <article>
+          <p>Total applicants</p>
+          <strong>{{ stats.applicants }}</strong>
+        </article>
+        <article>
+          <p>Pending review</p>
+          <strong>{{ stats.pending }}</strong>
+        </article>
+        <article>
+          <p>Accepted</p>
+          <strong>{{ stats.accepted }}</strong>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="stats-grid">
+    <app-stat-card title="Open jobs" [value]="stats.jobs" description="Roles currently visible to candidates." variant="blue"></app-stat-card>
+    <app-stat-card title="Applicants" [value]="stats.applicants" description="Candidates in the pipeline." variant="orange"></app-stat-card>
+    <app-stat-card title="Pending review" [value]="stats.pending" description="Waiting on your decision." variant="red"></app-stat-card>
+    <app-stat-card title="Accepted" [value]="stats.accepted" description="Candidates moved forward." variant="green"></app-stat-card>
+  </section>
+
+  <section class="recent-panel">
+    <div class="section-header">
+      <div>
+        <h2>Recently active jobs</h2>
+        <p>Quick access to the roles getting the most attention.</p>
+      </div>
+      <a routerLink="/employer/jobs" class="ghost-link">Open jobs board</a>
+    </div>
+
+    <div *ngIf="!loading && featuredJobs.length > 0; else emptyState" class="jobs-table">
+      <div class="job-row job-heading">
+        <span>Job title</span>
+        <span>Applicants</span>
+        <span>Type</span>
+        <span>Date</span>
+      </div>
+      <a *ngFor="let job of featuredJobs" class="job-row job-link" [routerLink]="['/employer/jobs', job.id, 'applicants']">
+        <span>{{ job.title }}</span>
+        <span>{{ job.applicantsCount }}</span>
+        <span>{{ job.type }}</span>
+        <span>{{ job.createdAt | date:'mediumDate' }}</span>
+      </a>
+    </div>
+
+    <ng-template #emptyState>
+      <div class="empty-card">
+        <p>{{ loading ? 'Loading dashboard...' : 'No employer jobs yet.' }}</p>
+      </div>
+    </ng-template>
+  </section>
+
+  <div *ngIf="error" class="page-error">{{ error }}</div>
+</div>

@@ -1,120 +1,153 @@
-/* Container */
-.auth-container {
-  display: flex;
-  width: 900px;
-  height: 550px;
-  margin: 60px auto;
-  border-radius: 20px;
-  overflow: hidden;
-  background: #fff;
-  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
-
-  animation: fadeIn 0.8s ease-in-out;
+.auth-style-page {
+  min-height: calc(100vh - 176px);
+  display: grid;
+  place-items: start center;
+  padding: 20px 0 56px;
 }
 
-/* Left Side */
-.auth-left {
-  flex: 1;
-  background: linear-gradient(135deg, #6a11cb, #2575fc);
-  color: #fff;
-  padding: 50px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-
-  animation: slideLeft 0.8s ease;
+.profile-form-card {
+  width: min(560px, 100%);
+  padding: 42px 44px;
+  border-radius: 8px;
+  background: #ffffff;
+  box-shadow: 0 26px 70px rgba(15, 23, 42, 0.08);
 }
 
-.auth-left h2 {
-  font-size: 30px;
-  margin-bottom: 10px;
+header {
+  text-align: center;
+  margin-bottom: 26px;
 }
 
-.auth-left p {
-  opacity: 0.9;
+header h1 {
+  margin: 0 0 12px;
+  font-size: 1.85rem;
+  font-weight: 900;
+  letter-spacing: -0.04em;
 }
 
-/* Right Side */
-.auth-right {
-  flex: 1;
-  padding: 50px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-
-  animation: slideRight 0.8s ease;
+header p {
+  margin: 0;
+  color: #111827;
 }
 
-/* Inputs */
-.auth-input {
+.profile-identity {
+  display: grid;
+  grid-template-columns: 52px 1fr auto;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 28px;
+  padding: 16px;
+  border-radius: 8px;
+  background: #f1f4f7;
+}
+
+.profile-avatar {
+  width: 52px;
+  height: 52px;
+  display: grid;
+  place-items: center;
+  border-radius: 8px;
+  background: #0757ad;
+  color: #ffffff;
+  font-weight: 900;
+}
+
+.profile-identity strong,
+.profile-identity span {
+  display: block;
+}
+
+.profile-identity span {
+  color: #6b7280;
+}
+
+.profile-identity button {
+  border: 0;
+  border-radius: 8px;
+  background: #ffffff;
+  padding: 10px 14px;
+  font-weight: 800;
+}
+
+form {
+  display: grid;
+  gap: 18px;
+}
+
+label {
+  display: grid;
+  gap: 10px;
+}
+
+label > span {
+  color: #111827;
+  font-size: 0.82rem;
+  font-weight: 900;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.input-shell {
+  min-height: 52px;
+  display: grid;
+  grid-template-columns: 42px 1fr;
+  align-items: center;
+  padding: 0 18px;
+  border-radius: 8px;
+  background: #e1e5e8;
+}
+
+.input-shell i {
+  color: #3f4e5f;
+}
+
+.input-shell input,
+.input-shell select {
   width: 100%;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: #111827;
+}
+
+.submit-btn {
+  min-height: 60px;
+  border: 0;
+  border-radius: 8px;
+  background: #0757ad;
+  color: #ffffff;
+  font-size: 1.05rem;
+  font-weight: 900;
+  box-shadow: 0 18px 34px rgba(7, 87, 173, 0.24);
+}
+
+.submit-btn i {
+  margin-left: 12px;
+}
+
+.info-panel {
+  margin-bottom: 18px;
   padding: 14px;
-  margin-bottom: 15px;
-  border-radius: 12px;
-  border: none;
-  background: #f1f5f9;
-  font-size: 14px;
-  transition: 0.3s;
+  border-radius: 8px;
+  background: #e1e5e8;
 }
 
-.auth-input:focus {
-  outline: none;
-  background: #e2e8f0;
-  transform: scale(1.02);
+.quote {
+  margin: 28px 0 0;
+  padding-left: 22px;
+  border-left: 2px solid #b8cff5;
+  color: #111827;
+  font-size: 0.92rem;
+  font-style: italic;
+  line-height: 1.6;
 }
 
-/* Button */
-.auth-btn {
-  width: 100%;
-  padding: 14px;
-  border: none;
-  border-radius: 12px;
-  background: linear-gradient(135deg, #6a11cb, #2575fc);
-  color: #fff;
-  font-weight: bold;
-  cursor: pointer;
-  transition: 0.3s;
-}
-
-.auth-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-}
-
-.auth-btn:active {
-  transform: scale(0.97);
-}
-
-/* Animations */
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: scale(0.95);
+@media (max-width: 620px) {
+  .profile-form-card {
+    padding: 34px 22px;
   }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
 
-@keyframes slideLeft {
-  from {
-    transform: translateX(-50px);
-    opacity: 0;
-  }
-  to {
-    transform: translateX(0);
-    opacity: 1;
-  }
-}
-
-@keyframes slideRight {
-  from {
-    transform: translateX(50px);
-    opacity: 0;
-  }
-  to {
-    transform: translateX(0);
-    opacity: 1;
+  .profile-identity {
+    grid-template-columns: 1fr;
   }
 }

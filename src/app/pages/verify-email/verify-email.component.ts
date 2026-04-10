@@ -123,6 +123,7 @@ export class VerifyEmailComponent implements OnInit, OnDestroy {
 
         // ✅ save token
         this.auth.saveToken(token);
+        localStorage.setItem('allowChooseRole', 'true');
 
         // 🧹 cleanup
         localStorage.removeItem('signupEmail');

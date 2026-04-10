@@ -1,0 +1,115 @@
+<div class="architect-page">
+  <header class="page-heading">
+    <span class="section-kicker">HireBridge</span>
+    <h1>Candidate Dashboard</h1>
+    <p>Track your applications, stay ready for new matches, and keep your profile active.</p>
+  </header>
+
+  <section class="metric-row">
+    <article class="metric-card wide">
+      <div>
+        <span>Total Applications</span>
+        <strong>{{ stats.total }}</strong>
+      </div>
+      <span class="mint-pill">Live</span>
+      <div class="people-strip" aria-hidden="true">
+        <span>{{ userName.charAt(0) }}</span>
+        <span>CV</span>
+        <span>HR</span>
+        <em>+Jobs</em>
+      </div>
+    </article>
+
+    <article class="metric-card">
+      <span>Accepted Rate</span>
+      <strong>{{ stats.total ? ((stats.accepted / stats.total) * 100 | number:'1.0-0') : 0 }}%</strong>
+      <p><i></i> Keep applying consistently</p>
+    </article>
+
+    <article class="metric-card blue">
+      <span>Pending Reviews</span>
+      <strong>{{ stats.pending }}</strong>
+      <p>Awaiting feedback <i class="fas fa-arrow-right"></i></p>
+    </article>
+  </section>
+
+  <div *ngIf="loading" class="skeleton-panel">
+    <div class="skeleton-line mb-3"></div>
+    <div class="skeleton-line w-75"></div>
+  </div>
+
+  <section class="dashboard-grid">
+    <article class="chart-panel">
+      <div class="panel-title">
+        <div>
+          <h2>Application Activity</h2>
+          <p>Your recent momentum across applications</p>
+        </div>
+        <div class="chart-tabs">
+          <span>Monthly</span>
+          <span>Quarterly</span>
+        </div>
+      </div>
+
+      <div class="bar-chart" aria-hidden="true">
+        <div style="height: 42%"><span>JAN</span></div>
+        <div style="height: 56%"><span>FEB</span></div>
+        <div style="height: 74%"><span>MAR</span></div>
+        <div style="height: 48%"><span>APR</span></div>
+        <div class="active" style="height: 92%"><em>Peak: {{ stats.total || 1 }}</em><span>MAY</span></div>
+        <div style="height: 60%"><span>JUN</span></div>
+      </div>
+    </article>
+
+    <aside class="interviews-panel">
+      <h2><i class="far fa-calendar"></i> Next Steps</h2>
+      <div class="interview-card blue-edge">
+        <span>Today</span>
+        <strong>Profile Review</strong>
+        <p>Keep your CV and skills updated</p>
+        <small>Tip</small>
+      </div>
+      <div class="interview-card green-edge">
+        <span>Anytime</span>
+        <strong>Search New Jobs</strong>
+        <p>Use filters to find better role matches</p>
+        <button type="button" routerLink="/jobs">Browse Jobs</button>
+      </div>
+      <a routerLink="/applications">Show My Applications <i class="fas fa-chevron-down"></i></a>
+    </aside>
+
+    <article class="activity-panel">
+      <div class="panel-title">
+        <h2>Recent Activity</h2>
+        <a routerLink="/applications">View All</a>
+      </div>
+
+      <div *ngIf="recentApplications.length > 0; else emptyState" class="activity-list">
+        <div class="activity-item" *ngFor="let app of recentApplications">
+          <div class="activity-icon"><i class="fas fa-file-lines"></i></div>
+          <div>
+            <p><strong>{{ app.jobTitle || app.title || 'Unknown role' }}</strong> was <span>{{ app.status || 'pending' }}</span></p>
+            <small>{{ app.createdAt ? (app.createdAt | date:'mediumDate') : 'Recently' }}</small>
+          </div>
+        </div>
+      </div>
+
+      <ng-template #emptyState>
+        <div class="empty-state">No recent applications yet.</div>
+      </ng-template>
+    </article>
+
+    <article class="sentiment-card">
+      <div class="d-flex justify-content-between align-items-start">
+        <i class="fas fa-heart"></i>
+        <span>Profile Pulse</span>
+      </div>
+      <h2>Stay Visible</h2>
+      <p>Complete profile details and keep applying to increase your chances of getting shortlisted.</p>
+      <div class="sentiment-track"><div></div></div>
+      <small>Profile strength matters</small>
+    </article>
+  </section>
+
+  <div *ngIf="error" class="alert alert-danger mt-4">{{ error }}</div>
+</div>

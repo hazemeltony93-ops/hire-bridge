@@ -1,0 +1,109 @@
+<div class="architect-page">
+  <header class="jobs-heading">
+    <div>
+      <span class="section-kicker">HireBridge</span>
+      <h1>Search Jobs</h1>
+      <p>Find roles that match your profile, filter by location, and apply in one place.</p>
+    </div>
+    <button type="button" class="create-btn" (click)="reloadJobs()">
+      <i class="fas fa-rotate-right"></i>
+      Refresh Matches
+    </button>
+  </header>
+
+  <div *ngIf="successMessage" class="alert alert-success">{{ successMessage }}</div>
+  <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
+
+  <section class="posting-metrics">
+    <article>
+      <span>Matched Jobs</span>
+      <strong>{{ filteredJobs.length }}</strong>
+      <em>Ready to explore</em>
+    </article>
+    <article>
+      <span>Remote Roles</span>
+      <strong>{{ remoteCount }}</strong>
+      <i class="fas fa-house-laptop"></i>
+    </article>
+    <article>
+      <span>Applied Roles</span>
+      <strong>{{ appliedCount }}</strong>
+      <i class="fas fa-paper-plane muted"></i>
+    </article>
+    <article class="blue">
+      <span>Open Right Now</span>
+      <strong>{{ activeCount }}</strong>
+      <i class="fas fa-briefcase"></i>
+    </article>
+  </section>
+
+  <section class="filter-line">
+    <div class="tabs summary-copy">
+      <button type="button" class="active">Available Jobs ({{ filteredJobs.length }})</button>
+    </div>
+    <div class="filters">
+      <input type="text" [(ngModel)]="searchTerm" placeholder="Search role, company, or location" />
+      <select [(ngModel)]="statusFilter">
+        <option value="all">All statuses</option>
+        <option value="active">Active</option>
+        <option value="applied">Applied</option>
+        <option value="rejected">Rejected</option>
+      </select>
+      <select [(ngModel)]="locationFilter">
+        <option value="all">All locations</option>
+        <option value="remote">Remote</option>
+        <option value="onsite">On-site</option>
+        <option value="hybrid">Hybrid</option>
+      </select>
+      <span><i class="fas fa-filter"></i> Filter results</span>
+    </div>
+  </section>
+
+  <div *ngIf="loading" class="posting-list">
+    <div class="posting-row skeleton-row" *ngFor="let item of [1,2,3,4]">
+      <div class="skeleton-line"></div>
+      <div class="skeleton-line w-50"></div>
+    </div>
+  </div>
+
+  <section *ngIf="!loading && filteredJobs.length > 0" class="posting-list">
+    <article class="posting-row" *ngFor="let job of filteredJobs; let i = index">
+      <div class="posting-icon" [class.alt]="i % 2 === 1">
+        <i class="fas" [ngClass]="i % 3 === 0 ? 'fa-code' : (i % 3 === 1 ? 'fa-terminal' : 'fa-bullhorn')"></i>
+      </div>
+
+      <div class="posting-main">
+        <h2>{{ job.title || job.jobTitle || 'Job opening' }}</h2>
+        <p>{{ job.companyName || job.company || 'HireBridge Partner' }} | {{ job.location || job.workType || 'Remote' }}</p>
+      </div>
+
+      <div class="posting-applicants">
+        <span>Match Score</span>
+        <strong>{{ job.applicantsCount || job.matchScore || job.score || 0 }}</strong>
+      </div>
+
+      <div class="posting-status">
+        <span class="status-pill" [class.draft]="(job.status || '').toLowerCase() === 'draft'">{{ job.applied ? 'Applied' : (job.status || 'Open') }}</span>
+        <small>{{ job.applied ? 'Application sent' : 'Ready to apply' }}</small>
+      </div>
+
+      <button
+        type="button"
+        class="apply-btn"
+        [disabled]="!job.applyEndpoint || job.applied"
+        (click)="apply(job)"
+      >
+        {{ job.applied ? 'Applied' : 'Apply' }}
+      </button>
+
+      <button type="button" class="more-btn">
+        <i class="fas fa-ellipsis-vertical"></i>
+      </button>
+    </article>
+  </section>
+
+  <section *ngIf="!loading && filteredJobs.length === 0" class="empty-state">
+    <h2>No job matches found yet</h2>
+    <p>Try changing the filters or update your profile to discover better opportunities.</p>
+  </section>
+</div>

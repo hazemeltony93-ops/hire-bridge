@@ -112,6 +112,8 @@ export class CandidateSetupComponent {
         this.loading = false;
         this.success = true;
 
+        localStorage.removeItem('allowChooseRole');
+
         setTimeout(() => {
           this.router.navigate(['/dashboard'], { replaceUrl: true });
         }, 800);

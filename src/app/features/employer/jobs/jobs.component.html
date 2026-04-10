@@ -1,0 +1,134 @@
+<div class="jobs-shell">
+  <section class="composer-card">
+    <div class="section-head">
+      <div>
+        <p class="eyebrow">Create Job</p>
+        <h1>{{ editingJobId ? 'Edit job posting' : 'Open a new position' }}</h1>
+      </div>
+      <button *ngIf="editingJobId" type="button" class="ghost-btn" (click)="resetForm()">Cancel edit</button>
+    </div>
+
+    <form [formGroup]="jobForm" class="job-form" (ngSubmit)="submit()">
+      <label class="field">
+        <span>Title</span>
+        <input type="text" formControlName="title" />
+        <small *ngIf="hasError('title', 'required')" class="field-error">Title is required.</small>
+      </label>
+
+      <label class="field">
+        <span>Category</span>
+        <input type="text" formControlName="category" />
+        <small *ngIf="hasError('category', 'required')" class="field-error">Category is required.</small>
+      </label>
+
+      <label class="field field-wide">
+        <span>Description</span>
+        <textarea rows="4" formControlName="description"></textarea>
+        <small *ngIf="hasError('description', 'required')" class="field-error">Description is required.</small>
+      </label>
+
+      <label class="field field-wide">
+        <span>Skills Required</span>
+        <input type="text" formControlName="skillsRequired" />
+        <small *ngIf="hasError('skillsRequired', 'required')" class="field-error">Skills are required.</small>
+      </label>
+
+      <label class="field">
+        <span>Experience Level</span>
+        <select formControlName="experienceLevel">
+          <option value="" disabled>Select experience level</option>
+          <option value="Junior">Junior</option>
+          <option value="Mid">Mid</option>
+          <option value="Senior">Senior</option>
+        </select>
+        <small *ngIf="hasError('experienceLevel', 'required')" class="field-error">Choose experience level.</small>
+      </label>
+
+      <label class="field">
+        <span>Min Experience</span>
+        <input type="text" formControlName="minExperience" />
+        <small *ngIf="hasError('minExperience', 'required')" class="field-error">Min experience is required.</small>
+      </label>
+
+      <label class="field">
+        <span>Budget Min</span>
+        <input type="number" formControlName="budgetMin" />
+        <small *ngIf="hasError('budgetMin', 'required')" class="field-error">Budget min is required.</small>
+        <small *ngIf="hasError('budgetMin', 'min')" class="field-error">Budget min must be greater than 0.</small>
+      </label>
+
+      <label class="field">
+        <span>Budget Max</span>
+        <input type="number" formControlName="budgetMax" />
+        <small *ngIf="hasError('budgetMax', 'required')" class="field-error">Budget max is required.</small>
+        <small *ngIf="hasError('budgetMax', 'min')" class="field-error">Budget max must be greater than 0.</small>
+      </label>
+
+      <label class="field">
+        <span>Work Type</span>
+        <select formControlName="workType">
+          <option value="" disabled>Select work type</option>
+          <option value="Full Time">Full Time</option>
+          <option value="Part Time">Part Time</option>
+          <option value="Remote">Remote</option>
+        </select>
+        <small *ngIf="hasError('workType', 'required')" class="field-error">Choose work type.</small>
+      </label>
+
+      <div class="form-actions">
+        <button type="submit" class="primary-btn" [disabled]="saving">
+          {{ saving ? 'Saving...' : (editingJobId ? 'Update Job' : 'Create Job') }}
+        </button>
+      </div>
+    </form>
+  </section>
+
+  <section class="jobs-card">
+    <div class="section-head">
+      <div>
+        <p class="eyebrow">Jobs List</p>
+        <h2>Current openings</h2>
+      </div>
+      <button type="button" class="ghost-btn" (click)="loadJobs()">Refresh</button>
+    </div>
+
+    <div *ngIf="error" class="message error">{{ error }}</div>
+    <div *ngIf="loading" class="message">Loading jobs...</div>
+
+    <div *ngIf="!loading && paginatedJobs.length > 0" class="jobs-table">
+      <div class="job-row job-heading">
+        <span>Role</span>
+        <span>Applicants</span>
+        <span>Salary</span>
+        <span>Actions</span>
+      </div>
+
+      <div *ngFor="let job of paginatedJobs" class="job-row">
+        <div class="job-meta">
+          <strong>{{ job.title }}</strong>
+          <small>{{ job.type }} • {{ job.createdAt | date:'mediumDate' }}</small>
+        </div>
+        <span>{{ job.applicantsCount }}</span>
+        <span>{{ job.salary | currency:'EGP ':'symbol':'1.0-0' }}</span>
+        <div class="actions">
+          <a class="link-btn" [routerLink]="['/employer/jobs', job.id, 'applicants']">Applicants</a>
+          <button type="button" class="link-btn" (click)="editJob(job)">Edit</button>
+          <button type="button" class="danger-btn" (click)="deleteJob(job)">Delete</button>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="!loading && paginatedJobs.length === 0" class="message">No jobs created yet.</div>
+
+    <div class="pagination" *ngIf="jobs.length > pageSize">
+      <button
+        type="button"
+        *ngFor="let page of pageNumbers"
+        [class.active]="currentPage === page"
+        (click)="goToPage(page)"
+      >
+        {{ page }}
+      </button>
+    </div>
+  </section>
+</div>

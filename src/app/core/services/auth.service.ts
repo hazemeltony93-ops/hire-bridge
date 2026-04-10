@@ -56,4 +56,10 @@ export class AuthService {
       return null;
     }
   }
+
+  getRole(): string | null {
+    const tokenRole = this.getUserFromToken()?.role;
+    const storedRole = localStorage.getItem('role');
+    return tokenRole || storedRole || null;
+  }
 }

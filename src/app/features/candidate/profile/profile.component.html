@@ -1,54 +1,74 @@
-<div class="auth-container">
+<div class="auth-style-page">
+  <section class="profile-form-card">
+    <header>
+      <h1>The Fluid Architect</h1>
+      <p>Design your organization's future, one talent at a time.</p>
+    </header>
 
-  <!-- Left (نفسه بالظبط) -->
-  <div class="auth-left">
-    <h2>Your Profile 👤</h2>
-    <p>Manage your professional data</p>
-  </div>
+    <div class="profile-identity">
+      <div class="profile-avatar">{{ user?.name?.charAt(0)?.toUpperCase() || 'U' }}</div>
+      <div>
+        <strong>{{ user?.name || 'User' }}</strong>
+        <span>{{ user?.email || 'user@example.com' }}</span>
+      </div>
+      <button type="button" (click)="loadProfile()" [disabled]="loadingProfile || savingProfile">
+        {{ loadingProfile ? 'Refreshing...' : 'Refresh' }}
+      </button>
+    </div>
 
-  <!-- Right -->
-  <div class="auth-right">
+    <div *ngIf="loadingProfile" class="info-panel">Loading your saved profile...</div>
+    <div *ngIf="successMessage" class="alert alert-success">{{ successMessage }}</div>
+    <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
 
     <form [formGroup]="profileForm" (ngSubmit)="submit()">
+      <label>
+        <span>Specialization</span>
+        <div class="input-shell">
+          <i class="fas fa-user-tie"></i>
+          <input type="text" formControlName="specialization" placeholder="Frontend Developer" />
+        </div>
+      </label>
 
-      <input 
-        class="auth-input"
-        type="text"
-        formControlName="specialization"
-        placeholder="Specialization"
-      >
+      <label>
+        <span>Experience Level</span>
+        <div class="input-shell">
+          <i class="fas fa-layer-group"></i>
+          <select formControlName="experienceLevel">
+            <option value="">Select experience level</option>
+            <option value="Junior">Junior</option>
+            <option value="Mid">Mid</option>
+            <option value="Senior">Senior</option>
+          </select>
+        </div>
+      </label>
 
-      <select 
-        class="auth-input"
-        formControlName="experienceLevel">
-        <option value="">Experience Level</option>
-        <option value="Junior">Junior</option>
-        <option value="Mid">Mid</option>
-        <option value="Senior">Senior</option>
-      </select>
+      <label>
+        <span>Expected Salary</span>
+        <div class="input-shell">
+          <i class="fas fa-envelope"></i>
+          <input type="number" formControlName="expectedSalary" placeholder="10000" />
+        </div>
+      </label>
 
-      <input 
-        class="auth-input"
-        type="number"
-        formControlName="expectedSalary"
-        placeholder="Expected Salary"
-      >
+      <label>
+        <span>Work Type</span>
+        <div class="input-shell">
+          <i class="fas fa-lock"></i>
+          <select formControlName="workType">
+            <option value="">Select work type</option>
+            <option value="Full Time">Full Time</option>
+            <option value="Part Time">Part Time</option>
+            <option value="Remote">Remote</option>
+          </select>
+        </div>
+      </label>
 
-      <select 
-        class="auth-input"
-        formControlName="workType">
-        <option value="">Work Type</option>
-        <option value="Full Time">Full Time</option>
-        <option value="Part Time">Part Time</option>
-        <option value="Remote">Remote</option>
-      </select>
-
-      <button class="auth-btn" type="submit">
-        Save Profile
+      <button type="submit" class="submit-btn" [disabled]="savingProfile">
+        {{ savingProfile ? 'Saving...' : 'Save Profile' }}
+        <i class="fas fa-arrow-right"></i>
       </button>
-
     </form>
 
-  </div>
-
+    <p class="quote">"The modern workspace is fluid, adaptive, and human-centric. Architect your team's success with precision."</p>
+  </section>
 </div>

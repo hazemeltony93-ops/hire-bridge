@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { RouterModule, Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
+
 import { AuthService } from '../../../core/services/auth.service';
 
 @Component({
@@ -11,13 +12,11 @@ import { AuthService } from '../../../core/services/auth.service';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent {
-
   email = '';
   password = '';
 
   loading = false;
   errorMsg = '';
-
   touched: any = {};
 
   constructor(
@@ -25,11 +24,11 @@ export class LoginComponent {
     private router: Router
   ) {}
 
-  isEmpty(value: string) {
+  isEmpty(value: string): boolean {
     return !value || value.trim() === '';
   }
 
-  onBlur(field: string) {
+  onBlur(field: string): void {
     this.touched[field] = true;
   }
 
@@ -37,8 +36,7 @@ export class LoginComponent {
     return !this.isEmpty(this.email) && !this.isEmpty(this.password);
   }
 
-  submit() {
-
+  submit(): void {
     this.errorMsg = '';
 
     if (!this.isValid()) {
@@ -52,47 +50,40 @@ export class LoginComponent {
       email: this.email,
       password: this.password
     }).subscribe({
-
       next: (res: any) => {
         this.loading = false;
 
-        console.log('LOGIN RESPONSE 👉', res);
+        localStorage.removeItem('role');
 
-        // ✅ token
         const token = res?.token || res?.accessToken || res?.data?.token;
-
-        // ✅ role (اختياري نحفظه)
-        const role =
+        const responseRole =
           res?.user?.role ||
           res?.data?.user?.role ||
-          res?.role;
+          res?.role ||
+          null;
 
-        if (token) {
-          this.auth.saveToken(token);
-          console.log('TOKEN SAVED ✅', token);
-
-          if (role) {
-            localStorage.setItem('role', role);
-            console.log('ROLE SAVED ✅', role);
-          }
-
-          // 🚀 دايركت على الداشبورد
-          setTimeout(() => {
-            this.router.navigate(['/dashboard'], { replaceUrl: true });
-          }, 50);
-
-        } else {
-          this.errorMsg = 'No token received ❌';
+        if (!token) {
+          this.errorMsg = 'No token received.';
+          return;
         }
-      },
 
+        this.auth.saveToken(token);
+        const tokenRole = this.auth.getUserFromToken()?.role || null;
+        const finalRole = responseRole || tokenRole || 'candidate';
+
+        localStorage.setItem('role', finalRole);
+
+        localStorage.removeItem('allowChooseRole');
+
+        const targetRoute = finalRole === 'employer'
+          ? '/employer/dashboard'
+          : '/dashboard';
+
+        this.router.navigate([targetRoute], { replaceUrl: true });
+      },
       error: (err: any) => {
         this.loading = false;
-
-        console.error('LOGIN ERROR ❌', err);
-
-        this.errorMsg =
-          err?.error?.message || 'Login failed ❌';
+        this.errorMsg = err?.error?.message || 'Login failed.';
       }
     });
   }

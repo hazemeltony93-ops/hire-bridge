@@ -1,53 +1,23 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { AuthService } from './auth.service';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CandidateService {
-
   private baseUrl = 'http://localhost:3004';
 
-  constructor(
-    private http: HttpClient,
-    private auth: AuthService
-  ) {}
+  constructor(private http: HttpClient) {}
 
-  private getHeaders(): HttpHeaders {
-    return new HttpHeaders({
-      auth: this.auth.getToken() || ''
-    });
-  }
-
-  // 👤 GET PROFILE
   getCandidateProfile() {
-    return this.http.get(
-      `${this.baseUrl}/candidate/candidate-profile`,
-      {
-        headers: this.getHeaders()
-      }
-    );
+    return this.http.get(`${this.baseUrl}/candidate/candidate-profile`);
   }
 
-  // 👤 UPDATE PROFILE
   updateCandidateProfile(data: any) {
-    return this.http.put(
-      `${this.baseUrl}/user/updateCandidateProfile`,
-      data,
-      {
-        headers: this.getHeaders()
-      }
-    );
+    return this.http.put(`${this.baseUrl}/user/updateCandidateProfile`, data);
   }
 
-  // 👤 BASIC PROFILE (optional)
   getProfile() {
-    return this.http.get(
-      `${this.baseUrl}/user/profile`,
-      {
-        headers: this.getHeaders()
-      }
-    );
+    return this.http.get(`${this.baseUrl}/user/profile`);
   }
 }

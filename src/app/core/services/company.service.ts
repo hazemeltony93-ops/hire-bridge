@@ -1,44 +1,31 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { AuthService } from './auth.service';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CompanyService {
-
   private baseUrl = 'http://localhost:3004';
 
-  constructor(
-    private http: HttpClient,
-    private auth: AuthService
-  ) {}
+  constructor(private http: HttpClient) {}
 
-  private getHeaders(): HttpHeaders {
-    return new HttpHeaders({
-      auth: this.auth.getToken() || ''
+  createCompanyProfile(data: any): Observable<any> {
+    return this.http.post(`${this.baseUrl}/company/companyProfile`, data);
+  }
+
+  verifyCompanyOtp(email: string, otp: string): Observable<any> {
+    return this.http.post(`${this.baseUrl}/company/verifyCompanyEmail`, { email, otp });
+  }
+
+  getPendingForCompany(companyId: string): Observable<any> {
+    return this.http.get(`${this.baseUrl}/company/getAllPendingForCompany/${companyId}`);
+  }
+
+  acceptOrRejectEmployer(companyId: string, applicantId: string, action: string): Observable<any> {
+    return this.http.put(`${this.baseUrl}/company/acceptOrRejectEmp/${companyId}`, {
+      applicantId,
+      action
     });
-  }
-
-  // 🏢 CREATE COMPANY
-  createCompanyProfile(data: any) {
-    return this.http.post(
-      `${this.baseUrl}/company/companyProfile`,
-      data,
-      {
-        headers: this.getHeaders()
-      }
-    );
-  }
-
-  // 🏢 VERIFY COMPANY OTP
-  verifyCompanyOtp(email: string, otp: string) {
-    return this.http.post(
-      `${this.baseUrl}/company/verifyCompanyEmail`,
-      { email, otp },
-      {
-        headers: this.getHeaders()
-      }
-    );
   }
 }

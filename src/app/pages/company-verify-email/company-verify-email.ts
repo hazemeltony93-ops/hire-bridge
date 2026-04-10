@@ -1,5 +1,5 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { interval, Subscription } from 'rxjs';
@@ -14,14 +14,12 @@ import { CompanyService } from '../../core/services/company.service';
   styleUrl: './company-verify-email.css'
 })
 export class CompanyVerifyEmailComponent implements OnInit, OnDestroy {
-
-  email: string = '';
+  email = '';
   otp: string[] = ['', '', '', '', ''];
 
   loading = false;
   errorMessage = '';
   successMessage = '';
-
   countdown = 60;
   private timerSub!: Subscription;
 
@@ -30,7 +28,7 @@ export class CompanyVerifyEmailComponent implements OnInit, OnDestroy {
     private company: CompanyService
   ) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.email = localStorage.getItem('companyEmail') || '';
 
     if (!this.email) {
@@ -41,12 +39,12 @@ export class CompanyVerifyEmailComponent implements OnInit, OnDestroy {
     this.startTimer();
 
     setTimeout(() => {
-      const firstInput = document.querySelector('.otp-container input') as HTMLElement;
+      const firstInput = document.querySelector('.otp-container input') as HTMLElement | null;
       firstInput?.focus();
     }, 100);
   }
 
-  startTimer() {
+  startTimer(): void {
     this.countdown = 60;
 
     this.timerSub = interval(1000).subscribe(() => {
@@ -58,15 +56,15 @@ export class CompanyVerifyEmailComponent implements OnInit, OnDestroy {
     });
   }
 
-  handleInput(event: any, index: number) {
-    const input = event.target;
-    let value = input.value.replace(/[^0-9]/g, '');
+  handleInput(event: Event, index: number): void {
+    const input = event.target as HTMLInputElement;
+    const value = input.value.replace(/[^0-9]/g, '');
 
     input.value = value;
     this.otp[index] = value;
 
     if (value && index < 4) {
-      input.nextElementSibling?.focus();
+      (input.nextElementSibling as HTMLElement | null)?.focus();
     }
 
     if (this.otp.join('').length === 5 && !this.loading) {
@@ -74,22 +72,26 @@ export class CompanyVerifyEmailComponent implements OnInit, OnDestroy {
     }
   }
 
-  handleKeyDown(event: any, index: number) {
+  handleKeyDown(event: KeyboardEvent, index: number): void {
+    const input = event.target as HTMLInputElement;
+
     if (event.key === 'Backspace') {
       if (this.otp[index]) {
         this.otp[index] = '';
-        event.target.value = '';
+        input.value = '';
         return;
       }
 
       if (index > 0) {
-        event.target.previousElementSibling?.focus();
+        (input.previousElementSibling as HTMLElement | null)?.focus();
       }
     }
   }
 
-  verify() {
-    if (this.loading) return;
+  verify(): void {
+    if (this.loading) {
+      return;
+    }
 
     const code = this.otp.join('');
 
@@ -110,29 +112,25 @@ export class CompanyVerifyEmailComponent implements OnInit, OnDestroy {
     this.company.verifyCompanyOtp(this.email, code).subscribe({
       next: () => {
         this.loading = false;
-
         localStorage.removeItem('companyEmail');
+        localStorage.setItem('role', 'employer');
+        this.successMessage = 'Company verified successfully.';
 
-        this.successMessage = 'Company verified 🎉';
-
-        // 🔥 هنا التعديل
         setTimeout(() => {
-          this.router.navigate(['/dashboard'], { replaceUrl: true });
+          this.router.navigate(['/employer/dashboard'], { replaceUrl: true });
         }, 1000);
       },
-
       error: (err: any) => {
         this.loading = false;
-
         this.errorMessage =
           err?.error?.message === 'OTP not found'
             ? 'Invalid or expired OTP'
-            : err?.error?.message || 'Something went wrong ❌';
+            : err?.error?.message || 'Something went wrong.';
       }
     });
   }
 
   ngOnDestroy(): void {
-    if (this.timerSub) this.timerSub.unsubscribe();
+    this.timerSub?.unsubscribe();
   }
 }
